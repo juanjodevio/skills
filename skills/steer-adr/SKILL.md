@@ -44,6 +44,24 @@ Do not create an ADR for routine implementation tasks, small refactors, or tempo
 8. Maintain or regenerate the ADR index or table of contents.
 9. Report any fallback if `adr-tools` is unavailable.
 
+## ADR Index
+
+When creating or refreshing an ADR index such as `docs/adr/README.md` or `docs/adr/index.md`, make decision status visible without requiring readers to open each ADR.
+
+Use this table shape unless the repository already has a compatible status-bearing index:
+
+| ADR | Status | Decision |
+| --- | --- | --- |
+| [ADR-001](./001-example.md) | Accepted | Example decision |
+
+For every ADR row:
+
+- `ADR` links to the ADR file.
+- `Status` matches the status declared inside that ADR file.
+- `Decision` summarizes the decision outcome or title clearly enough to scan.
+- Accepted, Proposed, and Superseded decisions are visible from the index.
+- If an ADR file has no declared status, record `Unknown` in the index and flag the ADR as a follow-up instead of inventing a status.
+
 ## Compact MADR Sections
 
 When creating an ADR manually or checking adr-tools output against the suite convention, read `references/compact-madr-template.md`.
@@ -82,4 +100,4 @@ Before finishing, check that:
 - the ADR does not rewrite accepted history
 - options are comparable at the same level of abstraction
 - consequences include meaningful trade-offs
-- the index or table of contents can lead a reader to the decision
+- the index or table of contents can lead a reader to the decision and shows the ADR status

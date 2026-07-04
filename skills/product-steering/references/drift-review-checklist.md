@@ -32,6 +32,8 @@ Use this checklist when reviewing steering drift across docs, code, config, ADRs
 - Are accepted ADRs being rewritten instead of superseded?
 - Is package manager, runtime, framework, database, or deployment direction ADR-worthy?
 - Is the ADR index or table of contents current?
+- Does the ADR index include `ADR`, `Status`, and `Decision` columns, with status values matching each ADR file?
+- Are ADRs with missing status recorded as `Unknown` in the index and flagged as follow-ups?
 
 ## AGENTS.md
 
