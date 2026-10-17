@@ -1,36 +1,49 @@
 # skills
 
-Reusable agent skills for product steering and durable project documentation.
+Reusable agent skills for **Project steering** and carrying settled intent into
+planned work.
 
-This repository is a skill suite for keeping product intent, repo structure,
-technical decisions, design context, roadmaps, ADRs, and agent instructions in
-sync. It is designed for the open agent skills ecosystem and can be installed
-with the [`skills`](https://github.com/vercel-labs/skills) CLI.
+This repository is a skill suite for keeping durable Project truth accurate
+across software, data, and marketing work, and for coordinating the default
+Work lifecycle. It targets the open agent skills ecosystem and installs with
+the [`skills`](https://github.com/vercel-labs/skills) CLI.
 
-The primary target agents are Cursor, Codex, and Claude Code.
+Primary target agents: Cursor, Codex, and Claude Code.
 
 ## Quick Start
 
-Install the full suite globally for Cursor, Codex, and Claude Code:
+Install the **full suite** globally for Cursor, Codex, and Claude Code:
 
 ```sh
 npx skills add juanjodevio/skills -g -a cursor -a codex -a claude-code --skill '*'
 ```
 
-This installs every skill in this repository so `product-steering` can route to
-the focused `steer-*` skills when needed.
+Focused standalone installation is unsupported. See
+[docs/installation.md](docs/installation.md).
+
+After install, skills are discoverable under each agent’s skills path
+(`~/.cursor/skills/`, `~/.codex/skills/`, `~/.claude/skills/` globally, or the
+project-local paths listed in the installation guide).
+
+## Docs
+
+| Doc | Purpose |
+| --- | --- |
+| [docs/catalog.md](docs/catalog.md) | Full module catalog; Work lifecycle vs Situational skills |
+| [docs/installation.md](docs/installation.md) | Full-suite install, discoverability, Matt dependencies |
+| [docs/migration.md](docs/migration.md) | Legacy name → replacement map |
+| [docs/work-tracker.md](docs/work-tracker.md) | Linear, GitHub, GitLab, Jira, local Markdown, custom |
+| [docs/design-md.md](docs/design-md.md) | `design-md` attribution; Stitch is not required |
+| [GLOSSARY.md](GLOSSARY.md) | Domain language |
+| [docs/adr/0001-rebuild-as-cross-domain-project-steering-suite.md](docs/adr/0001-rebuild-as-cross-domain-project-steering-suite.md) | Accepted architecture |
 
 ## Install Options
 
 ### Global Install
 
-Use a global install when you want these skills available across projects:
-
 ```sh
 npx skills add juanjodevio/skills -g -a cursor -a codex -a claude-code --skill '*'
 ```
-
-Global target paths for the main vendors:
 
 | Agent | `--agent` | Global Path |
 | --- | --- | --- |
@@ -40,14 +53,9 @@ Global target paths for the main vendors:
 
 ### Project-Local Install
 
-Use a project-local install when a consuming repository should carry its own
-skill installation:
-
 ```sh
 npx skills add juanjodevio/skills -a cursor -a codex -a claude-code --skill '*'
 ```
-
-Project target paths for the main vendors:
 
 | Agent | `--agent` | Project Path |
 | --- | --- | --- |
@@ -55,20 +63,7 @@ Project target paths for the main vendors:
 | Codex | `codex` | `.agents/skills/` |
 | Claude Code | `claude-code` | `.claude/skills/` |
 
-### Install A Specific Skill
-
-Normal users should install the full suite. Install a focused skill directly
-only when you know the task belongs to one artifact workflow.
-
-```sh
-npx skills add juanjodevio/skills -g -a cursor --skill product-steering
-npx skills add juanjodevio/skills -g -a cursor --skill steer-adr
-```
-
 ### Copy Instead Of Symlink
-
-The `skills` CLI prefers symlinks so installed skills share one source of truth.
-If symlinks are not supported in your environment, add `--copy`:
 
 ```sh
 npx skills add juanjodevio/skills -g -a cursor -a codex -a claude-code --skill '*' --copy
@@ -76,99 +71,84 @@ npx skills add juanjodevio/skills -g -a cursor -a codex -a claude-code --skill '
 
 ## Use Without Installing
 
-Try one skill without installing it:
-
 ```sh
-npx skills use juanjodevio/skills --skill product-steering --agent cursor
-npx skills use juanjodevio/skills --skill product-steering --agent claude-code
-npx skills use juanjodevio/skills --skill steer-adr --agent codex
+npx skills use juanjodevio/skills --skill steer-project --agent cursor
+npx skills use juanjodevio/skills --skill deliver-work --agent claude-code
+npx skills use juanjodevio/skills --skill setup-project-steering --agent codex
 ```
 
-`skills use` resolves the source, loads the selected skill into a temporary
-directory, and starts or prepares the requested agent flow.
+## Skill Catalog (summary)
 
-## Skill Catalog
-
-Use `product-steering` as the default entrypoint. Use a focused `steer-*` skill
-directly only when the task clearly belongs to one artifact.
+Use `steer-project` as the default Project steering entrypoint. Use
+`deliver-work` as the default Work lifecycle. Use `setup-project-steering` once
+per Project for configuration. Invoke focused adapters when one truth kind is
+clearly in scope. Full detail: [docs/catalog.md](docs/catalog.md).
 
 | Skill | Purpose |
 | --- | --- |
-| `product-steering` | Orchestrates product steering docs, ADRs, drift checks, and agent instructions. |
-| `steer-product` | Maintains `docs/PRODUCT.md`. |
-| `steer-structure` | Maintains `docs/STRUCTURE.md`. |
-| `steer-tech` | Maintains `docs/TECH.md`, including package manager and commands. |
-| `steer-design` | Maintains canonical `docs/DESIGN.md` for Stitch-compatible design context. |
-| `steer-roadmap` | Maintains `docs/ROADMAP.md`. |
-| `steer-adr` | Manages `docs/adr` with `adr-tools` and compact MADR conventions. |
-| `steer-agents` | Keeps root `AGENTS.md` compact and pointer-based. |
+| `setup-project-steering` | Configure `.steering.json`, tracker mappings, and bootstrap. |
+| `steer-project` | Shared Steering workflow and multi-artifact orchestration. |
+| `steer-intent` | Intent Steering artifact. |
+| `steer-technology` | Technology Steering artifact. |
+| `steer-design` | Design Steering artifact (`design-md` pattern). |
+| `steer-roadmap` | Roadmap Steering artifact. |
+| `steer-structure` | Structure Steering artifact. |
+| `steer-decisions` | Decision records / ADRs. |
+| `steer-agent-guidance` | Compact agent guidance pointers. |
+| `deliver-work` | Default Work lifecycle coordinator. |
+
+**Work lifecycle vs Situational skills:** `deliver-work` is the default path from
+unresolved intent through Tickets, execution, and retrospective. Focused
+steering adapters and Matt helpers (`grill-with-docs`, `to-spec`,
+`implement-spec`, `retro`, and others) are Situational—invoke them when needed,
+not as mandatory lifecycle stages. See the catalog.
 
 ## How The Suite Works
 
-`product-steering` is the router. It inspects the repository, classifies the
-request, asks structured questions when intent is missing, and routes work to
-the focused skills:
+1. `setup-project-steering` records artifact paths, evidence adapters, and Work
+   tracker mappings.
+2. `steer-project` inspects evidence, classifies ownership, resolves material
+   unknowns, updates one artifact at a time, checks consistency, and reports
+   related work.
+3. Focused adapters supply ownership and validation for one truth kind each.
+4. `deliver-work` coordinates grilling, Specification, Tickets, Frontier
+   execution, and retrospective via Matt skills by name.
 
-- Product purpose, users, scope, workflows, and success criteria go to
-  `steer-product`.
-- Repository layout, boundaries, ownership, and placement rules go to
-  `steer-structure`.
-- Stack, package manager, commands, dependencies, integrations, and constraints
-  go to `steer-tech`.
-- Design context, UI direction, accessibility, and Stitch-compatible
-  `DESIGN.md` guidance go to `steer-design`.
-- Now/next/later priorities, non-goals, risks, and sequencing go to
-  `steer-roadmap`.
-- Durable product, technical, design, or roadmap decisions go to `steer-adr`.
-- Root agent instructions and durable-doc pointers go to `steer-agents`.
-
-The focused skills keep each artifact small and clear. The entrypoint keeps the
-whole steering system aligned.
+External Matt dependencies are documented in
+[docs/installation.md](docs/installation.md). This suite does not vendor them
+and does not depend on Superpowers.
 
 ## Common Workflows
 
-After installing the suite, ask your agent for workflows like these.
-
-Bootstrap product steering in a repo:
+Bootstrap Project steering:
 
 ```text
-Use product-steering to set up PRODUCT.md, STRUCTURE.md, TECH.md, DESIGN.md,
-ROADMAP.md, docs/adr, and a compact AGENTS.md for this repo.
+Use setup-project-steering to configure this Project, then steer-project to
+bootstrap the active Steering artifacts.
 ```
 
-Update package-manager and command truth:
+Update durable technology direction:
 
 ```text
-Use product-steering. We switched from npm to pnpm and added pnpm build.
-Update TECH.md, AGENTS.md, and capture an ADR if this is a durable repo-wide
-decision.
+Use steer-project (or steer-technology). We switched package managers and need
+TECH/technology truth, then related agent guidance, updated.
 ```
 
 Capture a durable decision:
 
 ```text
-Use steer-adr to record that docs/DESIGN.md is the canonical Stitch design
-context and should be symlinked into frontend/DESIGN.md when needed.
+Use steer-decisions to record that Design follows the design-md pattern and
+Stitch is not required.
 ```
 
-Maintain design context:
+Shape and execute work:
 
 ```text
-Use steer-design to refresh docs/DESIGN.md for the current UI direction and
-flag any unknown accessibility or visual-system decisions.
-```
-
-Review drift before editing:
-
-```text
-Use product-steering to review steering drift. Compare docs, package manifests,
-ADRs, ROADMAP.md, DESIGN.md, and AGENTS.md. Tell me what should change before
-editing.
+Use deliver-work to take this idea through grill, Specification, Tickets, and
+implement-spec, then retro.
 ```
 
 ## Supported Agents
-
-This README focuses on the user's primary vendors:
 
 | Vendor | Agent ID |
 | --- | --- |
@@ -176,44 +156,20 @@ This README focuses on the user's primary vendors:
 | Codex / ChatGPT coding-agent tooling | `codex` |
 | Claude Code | `claude-code` |
 
-The `skills` CLI supports many more agents. See the full
+See the full
 [supported agents list](https://github.com/vercel-labs/skills#supported-agents).
 
 ## Update And Remove
 
-List installed skills:
-
 ```sh
 npx skills ls -g -a cursor -a codex -a claude-code
-```
-
-Update all global skills:
-
-```sh
 npx skills update -g
-```
-
-Update one skill:
-
-```sh
-npx skills update -g product-steering
-```
-
-Remove one skill from all agents:
-
-```sh
-npx skills remove product-steering --agent '*'
-```
-
-Remove all installed skills:
-
-```sh
 npx skills remove --all
 ```
 
-## Troubleshooting
+Migrating from the legacy suite? Read [docs/migration.md](docs/migration.md).
 
-Check that the CLI can discover this repository's skills:
+## Troubleshooting
 
 ```sh
 npx skills add juanjodevio/skills --list
@@ -223,35 +179,23 @@ If no skills are found:
 
 - Verify each skill lives at `skills/<name>/SKILL.md`.
 - Verify each `SKILL.md` has YAML frontmatter with `name` and `description`.
-- Run the list command above to confirm discovery before installing.
+- Confirm discovery before installing.
 
-If a skill does not load in an agent:
+If a skill does not load:
 
-- Verify it was installed to the expected agent path.
-- Re-run install with explicit `-a cursor`, `-a codex`, or `-a claude-code`.
-- Use `--copy` if your environment does not support symlinks.
-- Check the agent's own skill-loading documentation if the files are present but
-  not being loaded.
-
-If commands look stale:
-
-- Update the installed skills with `npx skills update -g`.
-- Reinstall from `juanjodevio/skills` if you changed install scope or agent
-  targets.
+- Verify install paths for `cursor`, `codex`, and `claude-code`.
+- Use `--copy` when symlinks fail.
+- Check the agent’s skill-loading documentation.
 
 ## Contributing And Skill Format
 
-Skills are directories containing a `SKILL.md` file:
-
 ```text
 skills/
-  product-steering/
+  steer-project/
     SKILL.md
-  steer-adr/
+  deliver-work/
     SKILL.md
 ```
-
-Each `SKILL.md` needs frontmatter:
 
 ```yaml
 ---
@@ -260,8 +204,12 @@ description: What this skill does and when to use it.
 ---
 ```
 
-Keep skill bodies focused. Put larger reusable templates or references in a
-local `references/` directory and link to them from the skill.
+Keep skill bodies focused. Put larger templates in `references/`.
 
-Generated evaluation files and workspaces are intentionally ignored and should
-not be committed. Commit skill source files, references, and user-facing docs.
+Generated evaluation files and workspaces are ignored (`evals/`,
+`skills/*-workspace/`) and must not be committed. Validate with:
+
+```sh
+python3 scripts/validate_package.py
+python3 -m unittest discover -s tests -v
+```

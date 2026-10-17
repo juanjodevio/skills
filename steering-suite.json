@@ -149,30 +149,6 @@
       ]
     },
     {
-      "name": "product-steering",
-      "role": "legacy",
-      "dependencies": [],
-      "references": [
-        "skills/product-steering/references/drift-review-checklist.md"
-      ]
-    },
-    {
-      "name": "steer-product",
-      "role": "legacy",
-      "dependencies": [],
-      "references": [
-        "skills/steer-product/references/product-template.md"
-      ]
-    },
-    {
-      "name": "steer-tech",
-      "role": "legacy",
-      "dependencies": [],
-      "references": [
-        "skills/steer-tech/references/tech-template.md"
-      ]
-    },
-    {
       "name": "steer-roadmap",
       "role": "roadmap-adapter",
       "dependencies": [
@@ -190,22 +166,6 @@
       ],
       "references": [
         "skills/steer-structure/references/structure-template.md"
-      ]
-    },
-    {
-      "name": "steer-adr",
-      "role": "legacy",
-      "dependencies": [],
-      "references": [
-        "skills/steer-adr/references/compact-madr-template.md"
-      ]
-    },
-    {
-      "name": "steer-agents",
-      "role": "legacy",
-      "dependencies": [],
-      "references": [
-        "skills/steer-agents/references/agents-template.md"
       ]
     }
   ]

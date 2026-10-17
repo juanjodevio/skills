@@ -1,3 +1,4 @@
+import json
 import re
 import subprocess
 import sys
@@ -156,13 +157,141 @@ class PackageValidationTests(unittest.TestCase):
         self.assertIn("trade-off", skill_text.lower())
         self.assertIn("supersed", skill_text.lower())
 
-    def test_legacy_steer_adr_remains(self) -> None:
-        metadata = skill_frontmatter("steer-adr")
+    def test_approved_suite_inventory_is_exact(self) -> None:
+        approved = {
+            "setup-project-steering",
+            "deliver-work",
+            "steer-project",
+            "steer-intent",
+            "steer-design",
+            "steer-technology",
+            "steer-roadmap",
+            "steer-structure",
+            "steer-decisions",
+            "steer-agent-guidance",
+        }
+        skill_dirs = {
+            path.name
+            for path in (ROOT / "skills").iterdir()
+            if path.is_dir() and (path / "SKILL.md").is_file()
+        }
+        self.assertEqual(skill_dirs, approved)
 
-        self.assertEqual(metadata["name"], "steer-adr")
-        suite = (ROOT / "steering-suite.json").read_text()
-        self.assertIn('"name": "steer-adr"', suite)
-        self.assertIn('"role": "legacy"', suite)
+        suite = json.loads((ROOT / "steering-suite.json").read_text())
+        suite_names = {module["name"] for module in suite["modules"]}
+        self.assertEqual(suite_names, approved)
+        self.assertNotIn("legacy", {module.get("role") for module in suite["modules"]})
+
+    def test_obsolete_public_names_are_absent(self) -> None:
+        obsolete = (
+            "product-steering",
+            "steer-product",
+            "steer-tech",
+            "steer-adr",
+            "steer-agents",
+        )
+        for name in obsolete:
+            skill_dir = ROOT / "skills" / name
+            self.assertFalse(skill_dir.exists(), name)
+            self.assertNotIn(
+                f'"name": "{name}"',
+                (ROOT / "steering-suite.json").read_text(),
+            )
+
+        # Only migration.md may name obsolete skills (as removed mappings).
+        # Match whole names so `steer-tech` does not hit `steer-technology`.
+        for path in (
+            ROOT / "README.md",
+            ROOT / "docs" / "catalog.md",
+            ROOT / "docs" / "installation.md",
+            ROOT / "docs" / "work-tracker.md",
+            ROOT / "docs" / "design-md.md",
+        ):
+            text = path.read_text()
+            for name in obsolete:
+                self.assertIsNone(
+                    re.search(rf"(?<![\w-]){re.escape(name)}(?![\w-])", text),
+                    f"{name} in {path.name}",
+                )
+
+    def test_published_interface_docs_exist(self) -> None:
+        catalog = (ROOT / "docs" / "catalog.md").read_text()
+        for name in (
+            "steer-project",
+            "steer-intent",
+            "steer-design",
+            "steer-technology",
+            "steer-roadmap",
+            "steer-structure",
+            "steer-decisions",
+            "steer-agent-guidance",
+            "setup-project-steering",
+            "deliver-work",
+        ):
+            self.assertIn(name, catalog)
+        self.assertIn("Work lifecycle", catalog)
+        self.assertIn("Situational", catalog)
+
+        installation = (ROOT / "docs" / "installation.md").read_text()
+        self.assertIn("full suite", installation.lower())
+        self.assertIn("focused standalone", installation.lower())
+        self.assertIn("unsupported", installation.lower())
+        for agent in ("cursor", "codex", "claude-code"):
+            self.assertIn(agent, installation)
+        for matt in (
+            "setup-matt-pocock-skills",
+            "grill-with-docs",
+            "domain-modeling",
+            "to-spec",
+            "to-tickets",
+            "implement-spec",
+            "retro",
+            "writing-for-agents",
+        ):
+            self.assertIn(matt, installation)
+        self.assertIn("do not add superpowers dependencies", installation.lower())
+
+        migration = (ROOT / "docs" / "migration.md").read_text()
+        for obsolete, replacement in (
+            ("product-steering", "steer-project"),
+            ("steer-product", "steer-intent"),
+            ("steer-tech", "steer-technology"),
+            ("steer-adr", "steer-decisions"),
+            ("steer-agents", "steer-agent-guidance"),
+        ):
+            self.assertIn(obsolete, migration)
+            self.assertIn(replacement, migration)
+        self.assertIn("no compatibility aliases", migration.lower())
+
+        tracker = (ROOT / "docs" / "work-tracker.md").read_text()
+        for kind in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
+            self.assertIn(kind, tracker)
+        self.assertIn("custom", tracker.lower())
+
+        design = (ROOT / "docs" / "design-md.md").read_text()
+        self.assertIn("design-md", design)
+        self.assertIn("Stitch is not required", design)
+
+        readme = (ROOT / "README.md").read_text()
+        self.assertIn("docs/catalog.md", readme)
+        self.assertIn("docs/installation.md", readme)
+        self.assertIn("docs/migration.md", readme)
+        self.assertIn("steer-project", readme)
+        self.assertIn("deliver-work", readme)
+        self.assertNotIn("Install A Specific Skill", readme)
+        self.assertNotIn("product-steering", readme)
+
+        adr = (
+            ROOT / "docs" / "adr" / "0001-rebuild-as-cross-domain-project-steering-suite.md"
+        ).read_text()
+        self.assertIn("without compatibility aliases", adr)
+        glossary = (ROOT / "GLOSSARY.md").read_text()
+        self.assertIn("Project steering", glossary)
+        self.assertIn("Situational skill", glossary)
+
+        gitignore = (ROOT / ".gitignore").read_text()
+        self.assertIn("evals/", gitignore)
+        self.assertIn("skills/*-workspace/", gitignore)
 
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(

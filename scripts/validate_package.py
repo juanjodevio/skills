@@ -64,7 +64,7 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultWorkLifecycle") != "deliver-work":
         fail("defaultWorkLifecycle must be deliver-work")
 
-    required = {
+    approved = {
         "setup-project-steering",
         "steer-project",
         "steer-intent",
@@ -76,8 +76,34 @@ def validate_modules(suite: dict) -> None:
         "steer-decisions",
         "deliver-work",
     }
-    if not required.issubset(set(names)):
-        fail(f"modules must include {sorted(required)}")
+    obsolete = {
+        "product-steering",
+        "steer-product",
+        "steer-tech",
+        "steer-adr",
+        "steer-agents",
+    }
+    name_set = set(names)
+    if name_set != approved:
+        fail(f"modules inventory must be exactly {sorted(approved)}; got {sorted(name_set)}")
+
+    skill_dirs = {
+        path.name
+        for path in (ROOT / "skills").iterdir()
+        if path.is_dir() and (path / "SKILL.md").is_file()
+    }
+    if skill_dirs != approved:
+        fail(
+            "skills/ inventory must match approved suite exactly; "
+            f"got {sorted(skill_dirs)}"
+        )
+
+    present_obsolete = sorted(name_set & obsolete)
+    if present_obsolete:
+        fail(f"obsolete modules must be absent: {present_obsolete}")
+    for obsolete_name in obsolete:
+        if (ROOT / "skills" / obsolete_name).exists():
+            fail(f"obsolete skill directory still present: {obsolete_name}")
 
     by_name = {module.get("name"): module for module in modules}
     setup = by_name.get("setup-project-steering", {})
@@ -89,6 +115,10 @@ def validate_modules(suite: dict) -> None:
     deliver = by_name.get("deliver-work", {})
     if deliver.get("role") != "work-lifecycle":
         fail("deliver-work role must be work-lifecycle")
+
+    entrypoint = by_name.get("steer-project", {})
+    if entrypoint.get("role") != "entrypoint":
+        fail("steer-project role must be entrypoint")
 
     for adapter_name, expected_role in (
         ("steer-intent", "intent-adapter"),
@@ -105,16 +135,12 @@ def validate_modules(suite: dict) -> None:
         if "steer-project" not in adapter.get("dependencies", []):
             fail(f"{adapter_name} must depend on steer-project")
 
-    roles = {module.get("name"): module.get("role") for module in modules}
-    if roles.get("steer-agents") != "legacy":
-        fail("steer-agents must remain legacy until removal")
-    if roles.get("steer-adr") != "legacy":
-        fail("steer-adr must remain legacy until removal")
-
     for module in modules:
         name = module.get("name")
         if not isinstance(name, str):
             fail("each module needs a string name")
+        if module.get("role") == "legacy":
+            fail(f"legacy role is not allowed for {name}")
         skill_dir = ROOT / "skills" / name
         parse_frontmatter(skill_dir)
         for relative in module.get("references", []):
@@ -270,11 +296,67 @@ def validate_scenarios(suite: dict) -> None:
             fail(f"lifecycle-stages.md missing {token!r}")
 
 
+def validate_published_docs() -> None:
+    required_docs = (
+        "docs/catalog.md",
+        "docs/installation.md",
+        "docs/migration.md",
+        "docs/work-tracker.md",
+        "docs/design-md.md",
+    )
+    for relative in required_docs:
+        path = ROOT / relative
+        if not path.is_file():
+            fail(f"missing published interface doc {relative}")
+
+    installation = (ROOT / "docs" / "installation.md").read_text()
+    if "full suite" not in installation.lower():
+        fail("installation.md must require the full suite")
+    if "unsupported" not in installation.lower():
+        fail("installation.md must mark focused standalone install unsupported")
+    for agent in ("cursor", "codex", "claude-code"):
+        if agent not in installation:
+            fail(f"installation.md missing discoverability for {agent}")
+
+    migration = (ROOT / "docs" / "migration.md").read_text()
+    for token in (
+        "product-steering",
+        "steer-product",
+        "steer-tech",
+        "steer-adr",
+        "steer-agents",
+        "steer-project",
+        "steer-intent",
+        "steer-technology",
+        "steer-decisions",
+        "steer-agent-guidance",
+    ):
+        if token not in migration:
+            fail(f"migration.md missing {token!r}")
+
+    tracker = (ROOT / "docs" / "work-tracker.md").read_text()
+    for kind in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
+        if kind not in tracker:
+            fail(f"work-tracker.md missing {kind!r}")
+
+    design = (ROOT / "docs" / "design-md.md").read_text()
+    if "design-md" not in design:
+        fail("design-md.md must credit the design-md pattern")
+    if "Stitch is not required" not in design:
+        fail("design-md.md must state Stitch is not required")
+
+    gitignore = (ROOT / ".gitignore").read_text()
+    for pattern in ("evals/", "skills/*-workspace/"):
+        if pattern not in gitignore:
+            fail(f".gitignore missing {pattern!r}")
+
+
 def main() -> None:
     suite = load_suite()
     validate_workflow(suite)
     validate_modules(suite)
     validate_scenarios(suite)
+    validate_published_docs()
     print("validated package")
 
 

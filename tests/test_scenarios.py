@@ -120,6 +120,46 @@ class ScenarioValidationTests(unittest.TestCase):
         for profile in ("software", "data", "marketing"):
             self.assertIn(profile, joined)
 
+    def test_scenario_inventory_covers_required_categories(self) -> None:
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        categories = {
+            "software": "multi-artifact-mixed-evidence.md",
+            "data": "multi-artifact-mixed-evidence.md",
+            "marketing": "multi-artifact-mixed-evidence.md",
+            "mixed evidence": "setup-mixed-evidence.md",
+            "setup": "setup-successful-bootstrap.md",
+            "focused steering": "intent-normal-update.md",
+            "multi-artifact coordination": "multi-artifact-dependency-ordering.md",
+            "decisions": "decisions-eligible-short-adr.md",
+            "tracker hierarchy": "deliver-work-hierarchy-confirmation.md",
+            "lifecycle resumption": "deliver-work-resume-approved-specification.md",
+            "human blockers": "deliver-work-execute-human-blockers-clean-stop.md",
+            "retrospectives": "deliver-work-execute-retro-on-outcomes.md",
+        }
+        for category, fixture in categories.items():
+            self.assertIn(fixture, present, category)
+            text = (SCENARIOS / fixture).read_text().lower()
+            if category in ("software", "data", "marketing"):
+                self.assertIn(category, text)
+            elif category == "mixed evidence":
+                self.assertIn("mixed", text)
+            elif category == "setup":
+                self.assertIn("setup", text)
+            elif category == "focused steering":
+                self.assertIn("steer-intent", text)
+            elif category == "multi-artifact coordination":
+                self.assertIn("orchestrator", text)
+            elif category == "decisions":
+                self.assertIn("decision", text)
+            elif category == "tracker hierarchy":
+                self.assertIn("hierarchy", text)
+            elif category == "lifecycle resumption":
+                self.assertIn("resume", text)
+            elif category == "human blockers":
+                self.assertIn("human", text)
+            elif category == "retrospectives":
+                self.assertIn("retro", text)
+
     def test_scenarios_cover_required_outcomes(self) -> None:
         texts = {
             path.name: path.read_text() for path in SCENARIOS.glob("*.md")
