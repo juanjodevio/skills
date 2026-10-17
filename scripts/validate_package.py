@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic package validation for the Project steering suite."""
+"""Inventory validation for the Project steering suite (Matt-style packaging)."""
 
 from __future__ import annotations
 
@@ -9,8 +9,28 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SUITE_PATH = ROOT / "steering-suite.json"
+SUITE_PATH = ROOT / "dev" / "steering-suite.json"
 FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
+
+APPROVED = {
+    "setup-project-steering",
+    "steer-project",
+    "steer-intent",
+    "steer-design",
+    "steer-structure",
+    "steer-technology",
+    "steer-roadmap",
+    "steer-agent-guidance",
+    "steer-decisions",
+    "deliver-work",
+}
+OBSOLETE = {
+    "product-steering",
+    "steer-product",
+    "steer-tech",
+    "steer-adr",
+    "steer-agents",
+}
 
 
 def fail(message: str) -> None:
@@ -20,11 +40,11 @@ def fail(message: str) -> None:
 
 def load_suite() -> dict:
     if not SUITE_PATH.is_file():
-        fail("steering-suite.json is missing")
+        fail("dev/steering-suite.json is missing")
     try:
         return json.loads(SUITE_PATH.read_text())
     except json.JSONDecodeError as exc:
-        fail(f"steering-suite.json is invalid JSON: {exc}")
+        fail(f"dev/steering-suite.json is invalid JSON: {exc}")
 
 
 def parse_frontmatter(skill_dir: Path) -> dict[str, str]:
@@ -51,57 +71,40 @@ def parse_frontmatter(skill_dir: Path) -> dict[str, str]:
 
 
 def validate_modules(suite: dict) -> None:
+    if "scenarios" in suite:
+        fail("dev/steering-suite.json must not list scenarios")
+
     modules = suite.get("modules")
     if not isinstance(modules, list) or not modules:
-        fail("steering-suite.json modules must be a non-empty list")
+        fail("dev/steering-suite.json modules must be a non-empty list")
 
     names = [module.get("name") for module in modules]
     if len(names) != len(set(names)):
-        fail("steering-suite.json modules contain duplicate names")
+        fail("dev/steering-suite.json modules contain duplicate names")
 
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
     if suite.get("defaultWorkLifecycle") != "deliver-work":
         fail("defaultWorkLifecycle must be deliver-work")
 
-    approved = {
-        "setup-project-steering",
-        "steer-project",
-        "steer-intent",
-        "steer-design",
-        "steer-structure",
-        "steer-technology",
-        "steer-roadmap",
-        "steer-agent-guidance",
-        "steer-decisions",
-        "deliver-work",
-    }
-    obsolete = {
-        "product-steering",
-        "steer-product",
-        "steer-tech",
-        "steer-adr",
-        "steer-agents",
-    }
     name_set = set(names)
-    if name_set != approved:
-        fail(f"modules inventory must be exactly {sorted(approved)}; got {sorted(name_set)}")
+    if name_set != APPROVED:
+        fail(f"modules inventory must be exactly {sorted(APPROVED)}; got {sorted(name_set)}")
 
     skill_dirs = {
         path.name
         for path in (ROOT / "skills").iterdir()
         if path.is_dir() and (path / "SKILL.md").is_file()
     }
-    if skill_dirs != approved:
+    if skill_dirs != APPROVED:
         fail(
             "skills/ inventory must match approved suite exactly; "
             f"got {sorted(skill_dirs)}"
         )
 
-    present_obsolete = sorted(name_set & obsolete)
-    if present_obsolete:
-        fail(f"obsolete modules must be absent: {present_obsolete}")
-    for obsolete_name in obsolete:
+    if name_set & OBSOLETE:
+        fail(f"obsolete modules must be absent: {sorted(name_set & OBSOLETE)}")
+    for obsolete_name in OBSOLETE:
         if (ROOT / "skills" / obsolete_name).exists():
             fail(f"obsolete skill directory still present: {obsolete_name}")
 
@@ -168,98 +171,8 @@ def validate_workflow(suite: dict) -> None:
         fail("evidenceProfiles must be software, data, and marketing")
 
 
-def validate_scenarios(suite: dict) -> None:
-    scenarios_root = ROOT / "scenarios"
-    if not scenarios_root.is_dir():
-        fail("scenarios/ is missing")
-
-    listed = suite.get("scenarios", [])
-    if not isinstance(listed, list) or not listed:
-        fail("steering-suite.json scenarios must be a non-empty list")
-
-    for relative in listed:
-        path = ROOT / relative
-        if not path.is_file():
-            fail(f"missing scenario {relative}")
-        text = path.read_text()
-        for heading in (
-            "## Request",
-            "## Fixture",
-            "## Evidence profiles",
-            "## Expected outcome",
-        ):
-            if heading not in text:
-                fail(f"{path.relative_to(ROOT)} is missing {heading}")
-
-    required = {
-        "scenarios/intent-normal-update.md",
-        "scenarios/intent-conflicting-evidence.md",
-        "scenarios/intent-missing-material-intent.md",
-        "scenarios/design-normal-update.md",
-        "scenarios/design-conflicting-evidence.md",
-        "scenarios/design-missing-material-intent.md",
-        "scenarios/structure-normal-update.md",
-        "scenarios/structure-conflicting-evidence.md",
-        "scenarios/structure-missing-material-intent.md",
-        "scenarios/technology-normal-update.md",
-        "scenarios/technology-conflicting-evidence.md",
-        "scenarios/technology-missing-material-intent.md",
-        "scenarios/roadmap-normal-update.md",
-        "scenarios/roadmap-conflicting-evidence.md",
-        "scenarios/roadmap-missing-material-intent.md",
-        "scenarios/agent-guidance-normal-update.md",
-        "scenarios/agent-guidance-conflicting-pointers.md",
-        "scenarios/agent-guidance-missing-material-intent.md",
-        "scenarios/decisions-eligible-short-adr.md",
-        "scenarios/decisions-ineligible-reversible.md",
-        "scenarios/decisions-ineligible-unsurprising.md",
-        "scenarios/decisions-ineligible-no-trade-off.md",
-        "scenarios/decisions-status-index-consistency.md",
-        "scenarios/decisions-supersession.md",
-        "scenarios/multi-artifact-dependency-ordering.md",
-        "scenarios/multi-artifact-ownership-routing.md",
-        "scenarios/multi-artifact-consistency-conflicts.md",
-        "scenarios/multi-artifact-mixed-evidence.md",
-        "scenarios/evidence-data-only.md",
-        "scenarios/evidence-marketing-only.md",
-        "scenarios/migration-obsolete-names-absent.md",
-        "scenarios/setup-preservation.md",
-        "scenarios/setup-dependency-failure.md",
-        "scenarios/setup-mixed-evidence.md",
-        "scenarios/setup-missing-material-intent.md",
-        "scenarios/setup-tracker-variation.md",
-        "scenarios/setup-successful-bootstrap.md",
-        "scenarios/deliver-work-new-request-starts-at-grill.md",
-        "scenarios/deliver-work-resume-approved-specification.md",
-        "scenarios/deliver-work-skip-approved-tickets.md",
-        "scenarios/deliver-work-hierarchy-confirmation.md",
-        "scenarios/deliver-work-ticket-approval-roles-blockers.md",
-        "scenarios/deliver-work-tracker-variation.md",
-        "scenarios/deliver-work-execute-success-implement-and-retro.md",
-        "scenarios/deliver-work-execute-partial-progress.md",
-        "scenarios/deliver-work-execute-human-blockers-clean-stop.md",
-        "scenarios/deliver-work-execute-resume-approved-tickets.md",
-        "scenarios/deliver-work-execute-tracker-updates-before-downstream.md",
-        "scenarios/deliver-work-execute-retro-on-outcomes.md",
-        "scenarios/deliver-work-execute-non-git-capability-blocker.md",
-    }
-    missing = required - set(listed)
-    if missing:
-        fail(f"scenarios inventory is missing {sorted(missing)}")
-
-    multi = ROOT / "scenarios" / "multi-artifact-dependency-ordering.md"
-    multi_text = multi.read_text()
-    for token in (
-        "Intent before dependent direction",
-        "agent guidance last",
-        "domain-modeling",
-        "through the orchestrator",
-    ):
-        if token not in multi_text:
-            fail(f"multi-artifact-dependency-ordering.md missing {token!r}")
-
-    setup_skill = ROOT / "skills" / "setup-project-steering" / "SKILL.md"
-    setup_text = setup_skill.read_text()
+def validate_core_skill_contracts() -> None:
+    setup_text = (ROOT / "skills" / "setup-project-steering" / "SKILL.md").read_text()
     for token in (
         "setup-matt-pocock-skills",
         "grill-with-docs",
@@ -269,8 +182,7 @@ def validate_scenarios(suite: dict) -> None:
         if token not in setup_text:
             fail(f"setup-project-steering/SKILL.md missing {token!r}")
 
-    deliver_skill = ROOT / "skills" / "deliver-work" / "SKILL.md"
-    deliver_text = deliver_skill.read_text()
+    deliver_text = (ROOT / "skills" / "deliver-work" / "SKILL.md").read_text()
     for token in (
         "grill-with-docs",
         "domain-modeling",
@@ -297,6 +209,15 @@ def validate_scenarios(suite: dict) -> None:
     for token in ("implement-spec", "retro", "Frontier"):
         if token not in lifecycle_text:
             fail(f"lifecycle-stages.md missing {token!r}")
+
+    project = (ROOT / "skills" / "steer-project" / "SKILL.md").read_text()
+    for token in (
+        "domain-modeling",
+        "Intent before",
+        "agent guidance last",
+    ):
+        if token not in project and token.lower() not in project.lower():
+            fail(f"steer-project/SKILL.md missing {token!r}")
 
 
 def validate_published_docs() -> None:
@@ -348,17 +269,17 @@ def validate_published_docs() -> None:
     if "Stitch is not required" not in design:
         fail("design-md.md must state Stitch is not required")
 
-    gitignore = (ROOT / ".gitignore").read_text()
-    for pattern in ("evals/", "skills/*-workspace/"):
-        if pattern not in gitignore:
-            fail(f".gitignore missing {pattern!r}")
+    if (ROOT / "scenarios").exists():
+        fail("scenarios/ must be absent (Matt-style inventory only)")
+    if (ROOT / "steering-suite.json").exists():
+        fail("root steering-suite.json must be absent; use dev/steering-suite.json")
 
 
 def main() -> None:
     suite = load_suite()
     validate_workflow(suite)
     validate_modules(suite)
-    validate_scenarios(suite)
+    validate_core_skill_contracts()
     validate_published_docs()
     print("validated package")
 

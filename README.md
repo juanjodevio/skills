@@ -207,10 +207,13 @@ description: What this skill does and when to use it.
 
 Keep skill bodies focused. Put larger templates in `references/`.
 
-Generated evaluation files and workspaces are ignored (`evals/`,
-`skills/*-workspace/`) and must not be committed. Validate with:
+The installable surface is `skills/`. Maintainer packaging lives in `scripts/`
+and `dev/` (suite inventory contract). Skill behavior is not scenario-tested;
+quality is editorial plus use in real Projects (Matt-style). Validate inventory
+with:
 
 ```sh
+./scripts/list-skills.sh
 python3 scripts/validate_package.py
 python3 -m unittest discover -s tests -v
 ```

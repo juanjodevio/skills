@@ -14,4 +14,4 @@ Reuse compatible Matt Pocock skills for setup prerequisites, grilling with domai
 - Install the Project steering suite as a whole; focused installation is unsupported.
 - Remove the old `product-steering` and abbreviated `steer-*` interfaces without compatibility aliases.
 - Keep Specifications and Tickets canonical in the configured work tracker.
-- Verify behavior through deterministic checks and agent-evaluated scenarios spanning software, data, and marketing.
+- Verify suite packaging through deterministic inventory checks (module list, frontmatter, references, obsolete-name absence). Skill behavior quality follows Matt’s skills-pack approach: editorial review and use in real Projects, not a committed scenario catalog.

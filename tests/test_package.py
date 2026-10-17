@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SUITE_PATH = ROOT / "dev" / "steering-suite.json"
 
 
 def skill_frontmatter(skill_name: str) -> dict[str, str]:
@@ -71,20 +72,11 @@ class PackageValidationTests(unittest.TestCase):
         self.assertIn("implement-spec", lifecycle)
         self.assertIn("retro", lifecycle)
         self.assertIn("Frontier", lifecycle)
-        suite = (ROOT / "steering-suite.json").read_text()
+        suite = SUITE_PATH.read_text()
         self.assertIn('"name": "deliver-work"', suite)
         self.assertIn('"role": "work-lifecycle"', suite)
         self.assertIn('"defaultWorkLifecycle": "deliver-work"', suite)
-        for scenario in (
-            "scenarios/deliver-work-execute-success-implement-and-retro.md",
-            "scenarios/deliver-work-execute-partial-progress.md",
-            "scenarios/deliver-work-execute-human-blockers-clean-stop.md",
-            "scenarios/deliver-work-execute-resume-approved-tickets.md",
-            "scenarios/deliver-work-execute-tracker-updates-before-downstream.md",
-            "scenarios/deliver-work-execute-retro-on-outcomes.md",
-            "scenarios/deliver-work-execute-non-git-capability-blocker.md",
-        ):
-            self.assertIn(scenario, suite)
+        self.assertNotIn('"scenarios"', suite)
 
     def test_project_entrypoint_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-project")
@@ -177,10 +169,11 @@ class PackageValidationTests(unittest.TestCase):
         }
         self.assertEqual(skill_dirs, approved)
 
-        suite = json.loads((ROOT / "steering-suite.json").read_text())
+        suite = json.loads(SUITE_PATH.read_text())
         suite_names = {module["name"] for module in suite["modules"]}
         self.assertEqual(suite_names, approved)
         self.assertNotIn("legacy", {module.get("role") for module in suite["modules"]})
+        self.assertNotIn("scenarios", suite)
 
     def test_obsolete_public_names_are_absent(self) -> None:
         obsolete = (
@@ -193,13 +186,8 @@ class PackageValidationTests(unittest.TestCase):
         for name in obsolete:
             skill_dir = ROOT / "skills" / name
             self.assertFalse(skill_dir.exists(), name)
-            self.assertNotIn(
-                f'"name": "{name}"',
-                (ROOT / "steering-suite.json").read_text(),
-            )
+            self.assertNotIn(f'"name": "{name}"', SUITE_PATH.read_text())
 
-        # Only migration.md may name obsolete skills (as removed mappings).
-        # Match whole names so `steer-tech` does not hit `steer-technology`.
         for path in (
             ROOT / "README.md",
             ROOT / "docs" / "catalog.md",
@@ -213,6 +201,15 @@ class PackageValidationTests(unittest.TestCase):
                     re.search(rf"(?<![\w-]){re.escape(name)}(?![\w-])", text),
                     f"{name} in {path.name}",
                 )
+
+    def test_matt_like_packaging_surface(self) -> None:
+        self.assertTrue((ROOT / "skills").is_dir())
+        self.assertTrue((ROOT / "docs").is_dir())
+        self.assertTrue((ROOT / "scripts" / "list-skills.sh").is_file())
+        self.assertTrue((ROOT / "scripts" / "validate_package.py").is_file())
+        self.assertTrue(SUITE_PATH.is_file())
+        self.assertFalse((ROOT / "scenarios").exists())
+        self.assertFalse((ROOT / "steering-suite.json").exists())
 
     def test_published_interface_docs_exist(self) -> None:
         catalog = (ROOT / "docs" / "catalog.md").read_text()
@@ -292,10 +289,6 @@ class PackageValidationTests(unittest.TestCase):
         self.assertIn("Project steering", glossary)
         self.assertIn("Situational skill", glossary)
 
-        gitignore = (ROOT / ".gitignore").read_text()
-        self.assertIn("evals/", gitignore)
-        self.assertIn("skills/*-workspace/", gitignore)
-
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(
             [sys.executable, "scripts/validate_package.py"],
@@ -306,6 +299,15 @@ class PackageValidationTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("validated package", result.stdout)
+
+        listed = subprocess.run(
+            ["bash", "scripts/list-skills.sh"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        self.assertIn("skills/steer-project/SKILL.md", listed.stdout)
 
 
 if __name__ == "__main__":

@@ -89,7 +89,13 @@ Capability checks:
 3. Use `deliver-work` as the default Work lifecycle coordinator.
 4. Invoke focused adapters only when one truth kind is clearly in scope.
 
-## Generated evaluation artifacts
+## Maintainer packaging
 
-Generated evaluation workspaces and results remain ignored (see `.gitignore`
-patterns `evals/` and `skills/*-workspace/`). Do not commit them.
+`npx skills add` installs `skills/` only. Maintainer inventory checks:
+
+```sh
+./scripts/list-skills.sh
+python3 scripts/validate_package.py
+```
+
+The slim suite contract lives at `dev/steering-suite.json` (not installed).
