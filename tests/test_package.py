@@ -33,6 +33,36 @@ class PackageValidationTests(unittest.TestCase):
         self.assertEqual(metadata["name"], "steer-intent")
         self.assertIn("Intent", metadata["description"])
 
+    def test_technology_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-technology")
+
+        self.assertEqual(metadata["name"], "steer-technology")
+        self.assertIn("technology", metadata["description"].lower())
+        self.assertIn("Steering workflow", metadata["description"])
+
+    def test_structure_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-structure")
+
+        self.assertEqual(metadata["name"], "steer-structure")
+        self.assertIn("structure", metadata["description"].lower())
+        self.assertIn("Steering workflow", metadata["description"])
+
+    def test_roadmap_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-roadmap")
+
+        self.assertEqual(metadata["name"], "steer-roadmap")
+        self.assertIn("Roadmap", metadata["description"])
+        self.assertIn("Steering workflow", metadata["description"])
+
+    def test_agent_guidance_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-agent-guidance")
+
+        self.assertEqual(metadata["name"], "steer-agent-guidance")
+        self.assertIn("agent guidance", metadata["description"].lower())
+        skill_text = (ROOT / "skills" / "steer-agent-guidance" / "SKILL.md").read_text()
+        self.assertIn("writing-for-agents", skill_text)
+        self.assertIn("steer-project", skill_text)
+
     def test_decisions_adapter_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-decisions")
 

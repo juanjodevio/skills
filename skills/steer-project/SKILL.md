@@ -23,7 +23,10 @@ Use this workflow for every Steering request:
    current state but cannot establish desired intent on their own.
 2. **Classify ownership.** Name the single truth type that owns the request and
    select its focused adapter. For an Intent request, use `steer-intent`. For a
-   decisions request, use `steer-decisions`. If the request spans truth types,
+   technology request, use `steer-technology`. For a Structure request, use
+   `steer-structure`. For a Roadmap sequencing request, use `steer-roadmap`.
+   For a decisions request, use `steer-decisions`. For an agent-guidance
+   request, use `steer-agent-guidance`. If the request spans truth types,
    choose the primary owner and report the remainder as related work.
 3. **Resolve material unknowns.** Ask concise questions when an answer could
    materially change the artifact. Prefer bounded questions for bounded choices.

@@ -19,6 +19,18 @@
     "scenarios/intent-normal-update.md",
     "scenarios/intent-conflicting-evidence.md",
     "scenarios/intent-missing-material-intent.md",
+    "scenarios/structure-normal-update.md",
+    "scenarios/structure-conflicting-evidence.md",
+    "scenarios/structure-missing-material-intent.md",
+    "scenarios/technology-normal-update.md",
+    "scenarios/technology-conflicting-evidence.md",
+    "scenarios/technology-missing-material-intent.md",
+    "scenarios/roadmap-normal-update.md",
+    "scenarios/roadmap-conflicting-evidence.md",
+    "scenarios/roadmap-missing-material-intent.md",
+    "scenarios/agent-guidance-normal-update.md",
+    "scenarios/agent-guidance-conflicting-pointers.md",
+    "scenarios/agent-guidance-missing-material-intent.md",
     "scenarios/decisions-eligible-short-adr.md",
     "scenarios/decisions-ineligible-reversible.md",
     "scenarios/decisions-ineligible-unsurprising.md",
@@ -47,6 +59,16 @@
       ]
     },
     {
+      "name": "steer-technology",
+      "role": "technology-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-technology/references/technology-template.md"
+      ]
+    },
+    {
       "name": "steer-decisions",
       "role": "decisions-adapter",
       "dependencies": [
@@ -54,6 +76,16 @@
       ],
       "references": [
         "skills/steer-decisions/references/decision-record-template.md"
+      ]
+    },
+    {
+      "name": "steer-agent-guidance",
+      "role": "agent-guidance-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-agent-guidance/references/agent-guidance-template.md"
       ]
     },
     {
@@ -90,16 +122,20 @@
     },
     {
       "name": "steer-roadmap",
-      "role": "legacy",
-      "dependencies": [],
+      "role": "roadmap-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
       "references": [
         "skills/steer-roadmap/references/roadmap-template.md"
       ]
     },
     {
       "name": "steer-structure",
-      "role": "legacy",
-      "dependencies": [],
+      "role": "structure-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
       "references": [
         "skills/steer-structure/references/structure-template.md"
       ]

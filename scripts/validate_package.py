@@ -62,11 +62,42 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
 
-    required = {"steer-project", "steer-intent", "steer-decisions"}
+    required = {
+        "steer-project",
+        "steer-intent",
+        "steer-structure",
+        "steer-technology",
+        "steer-roadmap",
+        "steer-agent-guidance",
+        "steer-decisions",
+    }
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
 
+    by_name = {module.get("name"): module for module in modules}
+    structure = by_name.get("steer-structure", {})
+    if structure.get("role") != "structure-adapter":
+        fail("steer-structure must be registered as structure-adapter")
+    if "steer-project" not in structure.get("dependencies", []):
+        fail("steer-structure must depend on steer-project")
+
+    technology = by_name.get("steer-technology", {})
+    if technology.get("role") != "technology-adapter":
+        fail("steer-technology must be registered as technology-adapter")
+    if "steer-project" not in technology.get("dependencies", []):
+        fail("steer-technology must depend on steer-project")
+
+    roadmap = by_name["steer-roadmap"]
+    if roadmap.get("role") != "roadmap-adapter":
+        fail("steer-roadmap must be registered as roadmap-adapter")
+    if roadmap.get("dependencies") != ["steer-project"]:
+        fail("steer-roadmap must depend on steer-project")
+
     roles = {module.get("name"): module.get("role") for module in modules}
+    if roles.get("steer-agent-guidance") != "agent-guidance-adapter":
+        fail("steer-agent-guidance must have role agent-guidance-adapter")
+    if roles.get("steer-agents") != "legacy":
+        fail("steer-agents must remain legacy until removal")
     if roles.get("steer-decisions") != "decisions-adapter":
         fail("steer-decisions must have role decisions-adapter")
     if roles.get("steer-adr") != "legacy":
@@ -130,6 +161,18 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/intent-normal-update.md",
         "scenarios/intent-conflicting-evidence.md",
         "scenarios/intent-missing-material-intent.md",
+        "scenarios/structure-normal-update.md",
+        "scenarios/structure-conflicting-evidence.md",
+        "scenarios/structure-missing-material-intent.md",
+        "scenarios/technology-normal-update.md",
+        "scenarios/technology-conflicting-evidence.md",
+        "scenarios/technology-missing-material-intent.md",
+        "scenarios/roadmap-normal-update.md",
+        "scenarios/roadmap-conflicting-evidence.md",
+        "scenarios/roadmap-missing-material-intent.md",
+        "scenarios/agent-guidance-normal-update.md",
+        "scenarios/agent-guidance-conflicting-pointers.md",
+        "scenarios/agent-guidance-missing-material-intent.md",
         "scenarios/decisions-eligible-short-adr.md",
         "scenarios/decisions-ineligible-reversible.md",
         "scenarios/decisions-ineligible-unsurprising.md",
