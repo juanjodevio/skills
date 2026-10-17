@@ -33,6 +33,13 @@ class PackageValidationTests(unittest.TestCase):
         self.assertEqual(metadata["name"], "steer-intent")
         self.assertIn("Intent", metadata["description"])
 
+    def test_structure_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-structure")
+
+        self.assertEqual(metadata["name"], "steer-structure")
+        self.assertIn("structure", metadata["description"].lower())
+        self.assertIn("Steering workflow", metadata["description"])
+
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(
             [sys.executable, "scripts/validate_package.py"],

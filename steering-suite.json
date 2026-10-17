@@ -18,7 +18,10 @@
   "scenarios": [
     "scenarios/intent-normal-update.md",
     "scenarios/intent-conflicting-evidence.md",
-    "scenarios/intent-missing-material-intent.md"
+    "scenarios/intent-missing-material-intent.md",
+    "scenarios/structure-normal-update.md",
+    "scenarios/structure-conflicting-evidence.md",
+    "scenarios/structure-missing-material-intent.md"
   ],
   "modules": [
     {
@@ -82,8 +85,10 @@
     },
     {
       "name": "steer-structure",
-      "role": "legacy",
-      "dependencies": [],
+      "role": "structure-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
       "references": [
         "skills/steer-structure/references/structure-template.md"
       ]
