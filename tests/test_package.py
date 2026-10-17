@@ -33,6 +33,15 @@ class PackageValidationTests(unittest.TestCase):
         self.assertEqual(metadata["name"], "steer-intent")
         self.assertIn("Intent", metadata["description"])
 
+    def test_agent_guidance_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-agent-guidance")
+
+        self.assertEqual(metadata["name"], "steer-agent-guidance")
+        self.assertIn("agent guidance", metadata["description"].lower())
+        skill_text = (ROOT / "skills" / "steer-agent-guidance" / "SKILL.md").read_text()
+        self.assertIn("writing-for-agents", skill_text)
+        self.assertIn("steer-project", skill_text)
+
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(
             [sys.executable, "scripts/validate_package.py"],

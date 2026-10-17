@@ -18,7 +18,10 @@
   "scenarios": [
     "scenarios/intent-normal-update.md",
     "scenarios/intent-conflicting-evidence.md",
-    "scenarios/intent-missing-material-intent.md"
+    "scenarios/intent-missing-material-intent.md",
+    "scenarios/agent-guidance-normal-update.md",
+    "scenarios/agent-guidance-conflicting-pointers.md",
+    "scenarios/agent-guidance-missing-material-intent.md"
   ],
   "modules": [
     {
@@ -38,6 +41,16 @@
       ],
       "references": [
         "skills/steer-intent/references/intent-template.md"
+      ]
+    },
+    {
+      "name": "steer-agent-guidance",
+      "role": "agent-guidance-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-agent-guidance/references/agent-guidance-template.md"
       ]
     },
     {
