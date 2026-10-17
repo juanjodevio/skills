@@ -176,10 +176,25 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/decisions-ineligible-no-trade-off.md",
         "scenarios/decisions-status-index-consistency.md",
         "scenarios/decisions-supersession.md",
+        "scenarios/multi-artifact-dependency-ordering.md",
+        "scenarios/multi-artifact-ownership-routing.md",
+        "scenarios/multi-artifact-consistency-conflicts.md",
+        "scenarios/multi-artifact-mixed-evidence.md",
     }
     missing = required - set(listed)
     if missing:
         fail(f"scenarios inventory is missing {sorted(missing)}")
+
+    multi = ROOT / "scenarios" / "multi-artifact-dependency-ordering.md"
+    multi_text = multi.read_text()
+    for token in (
+        "Intent before dependent direction",
+        "agent guidance last",
+        "domain-modeling",
+        "through the orchestrator",
+    ):
+        if token not in multi_text:
+            fail(f"multi-artifact-dependency-ordering.md missing {token!r}")
 
 
 def main() -> None:

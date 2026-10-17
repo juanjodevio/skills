@@ -26,6 +26,15 @@ class PackageValidationTests(unittest.TestCase):
 
         self.assertEqual(metadata["name"], "steer-project")
         self.assertIn("default Project steering entrypoint", metadata["description"])
+        skill_text = (ROOT / "skills" / "steer-project" / "SKILL.md").read_text()
+        self.assertIn("orchestrat", skill_text.lower())
+        self.assertIn("domain-modeling", skill_text)
+        self.assertIn("Intent before", skill_text)
+        self.assertIn("agent guidance last", skill_text.lower())
+        self.assertIn("never resolved silently", skill_text.lower())
+        self.assertNotIn("intent-template.md", skill_text)
+        self.assertNotIn("decision-record-template.md", skill_text)
+        self.assertNotIn("Hard to reverse", skill_text)
 
     def test_intent_adapter_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-intent")

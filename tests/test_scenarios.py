@@ -73,6 +73,16 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_multi_artifact_scenarios_exist(self) -> None:
+        required = {
+            "multi-artifact-dependency-ordering.md",
+            "multi-artifact-ownership-routing.md",
+            "multi-artifact-consistency-conflicts.md",
+            "multi-artifact-mixed-evidence.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -201,6 +211,35 @@ class ScenarioValidationTests(unittest.TestCase):
             "asks for material Intent",
             texts["agent-guidance-missing-material-intent.md"],
         )
+
+    def test_multi_artifact_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        ordering = texts["multi-artifact-dependency-ordering.md"]
+        self.assertIn("Intent before dependent direction", ordering)
+        self.assertIn("agent guidance last", ordering)
+        self.assertIn("domain-modeling", ordering)
+        self.assertIn("through the orchestrator", ordering)
+
+        ownership = texts["multi-artifact-ownership-routing.md"]
+        self.assertIn("not by the filenames", ownership)
+        self.assertIn("steer-intent", ownership)
+        self.assertIn("steer-structure", ownership)
+        self.assertIn("steer-agent-guidance", ownership)
+        self.assertIn("Unrelated artifacts", ownership)
+
+        conflicts = texts["multi-artifact-consistency-conflicts.md"]
+        self.assertIn("never resolved silently", conflicts)
+        self.assertIn("through the orchestrator", conflicts)
+        self.assertIn("not duplicated", conflicts)
+
+        mixed = texts["multi-artifact-mixed-evidence.md"]
+        self.assertIn("not flattened", mixed)
+        for profile in ("software", "data", "marketing"):
+            self.assertIn(profile, mixed)
+        self.assertIn("steer-intent", mixed)
+        self.assertIn("steer-design", mixed)
 
 
 if __name__ == "__main__":
