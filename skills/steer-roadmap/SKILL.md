@@ -1,63 +1,66 @@
 ---
 name: steer-roadmap
-description: Maintain docs/ROADMAP.md as the product and delivery sequencing guide. Use this skill whenever the user asks about now/next/later priorities, planned work, non-goals, risks, dependencies, release sequencing, roadmap drift, or how future agents should understand what to build next.
+description: Steer durable Project Roadmap sequencing through the shared Steering workflow. Use this focused adapter for priorities, sequencing, dependencies, risks, non-goals, and decision points.
 ---
 
 # Steer Roadmap
 
-Maintain `docs/ROADMAP.md`. This file captures intended sequencing and makes non-goals visible so agents do not build the wrong thing early.
+Maintain the Steering artifact configured for `roadmap`. Delegate the common
+process to `steer-project`; this adapter supplies Roadmap ownership and
+validation rather than a second workflow.
 
 ## Ownership
 
-Own roadmap truth:
+Roadmap owns:
 
-- now, next, and later priorities
-- explicit non-goals
-- risks and dependencies
-- decision points
-- sequencing rationale
-- assumptions and unknowns
-- last-reviewed metadata
+- Now, Next, and Later priorities and their sequencing rationale
+- explicit non-goals for the planning horizon
+- dependencies and risks that affect delivery sequence
+- decision points that gate sequencing changes
+- confirmed assumptions and material unknowns about sequence
 
-Do not duplicate product scope from `docs/PRODUCT.md` or technical command details from `docs/TECH.md`.
+Roadmap does not own Project purpose or audiences, implementation choices,
+physical repository layout, design semantics, decision history, agent
+instructions, or Ticket-level execution detail. Classify those as related work
+for their owning adapters or the work tracker.
 
-## Workflow
+## Procedure
 
-1. Read `docs/ROADMAP.md` if it exists.
-2. Inspect issues, project docs, commits, TODO comments, and product docs when relevant.
-3. Treat existing plans as intent only when they are current or confirmed.
-4. Use `AskQuestionTool` where possible for bounded priority, sequencing, or scope decisions.
-5. Ask in plain text when strategic rationale is missing.
-6. Update only `docs/ROADMAP.md`.
-7. If the roadmap change locks in a durable direction that affects implementation, propose or create an ADR through `steer-adr`.
-8. Return cross-doc follow-ups for product, design, tech, ADR, or `AGENTS.md`.
-
-## Suggested Structure
-
-When creating `docs/ROADMAP.md` from scratch or normalizing a sparse file, read `references/roadmap-template.md`.
-
-Use this structure unless the repo already has a strong convention:
-
-- Roadmap Summary
-- Now
-- Next
-- Later
-- Non-Goals
-- Risks And Dependencies
-- Decision Points
-- Assumptions
-- Unknowns
-- Last Reviewed
-
-Keep roadmap items outcome-oriented. Implementation tasks belong in plans or issues unless they define sequencing.
+1. Invoke the shared Steering workflow in `steer-project`.
+2. Resolve `roadmap` through `.steering.json`; do not assume the artifact is
+   named `ROADMAP.md` or any other physical name. Preserve compatible existing
+   roadmap conventions through the configured mapping.
+3. Inspect relevant software, data, and marketing evidence profiles together
+   with current work-tracker state, commits, plans, and other Steering
+   artifacts. Treat all of these as evidence and consider freshness; stale
+   plans do not override current confirmed intent.
+4. Ask only questions whose answers materially affect sequencing. In
+   particular, confirm priority order, non-goals, or critical dependencies when
+   evidence is absent, stale, or conflicting. Do not infer priority from
+   activity alone.
+5. When the maintainer cannot answer and a safe update remains possible, label
+   provisional claims under `Assumptions` and unanswered decisions under
+   `Unknowns`. Do not present either as settled sequencing.
+6. Update only the configured Roadmap Steering artifact, using the existing
+   structure or [Roadmap template](references/roadmap-template.md). Keep items
+   outcome-oriented; leave Ticket execution detail in the work tracker.
+7. Route durable trade-offs that lock implementation direction to decision
+   steering as related work without copying ADR policy into the Roadmap.
+8. Run the shared validation, consistency check, and related-work report.
 
 ## Self-Check
 
-Before finishing, check that:
-
-- priorities are explicit and not silently inferred
-- non-goals are visible
-- roadmap items do not contradict accepted ADRs
-- durable roadmap decisions were routed to ADR consideration
-- stale items are marked for review instead of quietly removed when intent is unclear
-- `Last Reviewed` is present or intentionally preserved
+- Every settled priority or sequence claim comes from maintainer-provided
+  intent or an explicit, current source of sequencing intent.
+- Tracker activity, commits, and stale plans are not promoted to Now without
+  confirmation.
+- Dependencies and risks use canonical Project language.
+- Material conflicts and missing sequencing intent caused questions or
+  explicit unknowns.
+- Ticket-level execution detail was not absorbed into the Roadmap artifact.
+- Durable trade-offs were reported for decision steering rather than recorded
+  as ADR policy here.
+- The update contains assumptions, unknowns, and last-reviewed metadata when
+  relevant, without adding empty ceremonial sections.
+- Intent, technology, design, structure, decision, and agent-guidance changes
+  are reported as related work rather than edited in this invocation.

@@ -62,9 +62,16 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
 
-    required = {"steer-project", "steer-intent"}
+    required = {"steer-project", "steer-intent", "steer-roadmap"}
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
+
+    by_name = {module.get("name"): module for module in modules}
+    roadmap = by_name["steer-roadmap"]
+    if roadmap.get("role") != "roadmap-adapter":
+        fail("steer-roadmap must be registered as roadmap-adapter")
+    if roadmap.get("dependencies") != ["steer-project"]:
+        fail("steer-roadmap must depend on steer-project")
 
     for module in modules:
         name = module.get("name")
@@ -124,6 +131,9 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/intent-normal-update.md",
         "scenarios/intent-conflicting-evidence.md",
         "scenarios/intent-missing-material-intent.md",
+        "scenarios/roadmap-normal-update.md",
+        "scenarios/roadmap-conflicting-evidence.md",
+        "scenarios/roadmap-missing-material-intent.md",
     }
     missing = required - set(listed)
     if missing:

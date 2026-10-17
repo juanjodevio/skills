@@ -16,6 +16,15 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_roadmap_scenarios_exist(self) -> None:
+        required = {
+            "roadmap-normal-update.md",
+            "roadmap-conflicting-evidence.md",
+            "roadmap-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -34,6 +43,22 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn(
             "asks for material Intent",
             texts["intent-missing-material-intent.md"],
+        )
+        self.assertIn(
+            "configured artifact path",
+            texts["roadmap-normal-update.md"],
+        )
+        self.assertIn(
+            "not inferred from activity alone",
+            texts["roadmap-conflicting-evidence.md"],
+        )
+        self.assertIn(
+            "asks for material sequencing",
+            texts["roadmap-missing-material-intent.md"],
+        )
+        self.assertIn(
+            "Ticket-level execution",
+            texts["roadmap-normal-update.md"],
         )
 
 

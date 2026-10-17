@@ -18,7 +18,10 @@
   "scenarios": [
     "scenarios/intent-normal-update.md",
     "scenarios/intent-conflicting-evidence.md",
-    "scenarios/intent-missing-material-intent.md"
+    "scenarios/intent-missing-material-intent.md",
+    "scenarios/roadmap-normal-update.md",
+    "scenarios/roadmap-conflicting-evidence.md",
+    "scenarios/roadmap-missing-material-intent.md"
   ],
   "modules": [
     {
@@ -74,8 +77,10 @@
     },
     {
       "name": "steer-roadmap",
-      "role": "legacy",
-      "dependencies": [],
+      "role": "roadmap-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
       "references": [
         "skills/steer-roadmap/references/roadmap-template.md"
       ]
