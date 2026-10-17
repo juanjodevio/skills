@@ -83,6 +83,18 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_setup_scenarios_exist(self) -> None:
+        required = {
+            "setup-preservation.md",
+            "setup-dependency-failure.md",
+            "setup-mixed-evidence.md",
+            "setup-missing-material-intent.md",
+            "setup-tracker-variation.md",
+            "setup-successful-bootstrap.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -240,6 +252,46 @@ class ScenarioValidationTests(unittest.TestCase):
             self.assertIn(profile, mixed)
         self.assertIn("steer-intent", mixed)
         self.assertIn("steer-design", mixed)
+
+    def test_setup_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        preservation = texts["setup-preservation.md"]
+        self.assertIn("left unchanged", preservation)
+        self.assertIn("setup-matt-pocock-skills", preservation)
+        self.assertIn("preserved", preservation)
+
+        dependency = texts["setup-dependency-failure.md"]
+        self.assertIn("grill-with-docs", dependency)
+        self.assertIn("fails clearly", dependency)
+        self.assertIn("reduced", dependency)
+        self.assertIn("fallback", dependency)
+
+        mixed = texts["setup-mixed-evidence.md"]
+        for profile in ("software", "data", "marketing"):
+            self.assertIn(profile, mixed)
+        self.assertIn("activated together", mixed)
+        self.assertIn("steer-project", mixed)
+
+        missing = texts["setup-missing-material-intent.md"]
+        self.assertIn("grill-with-docs", missing)
+        self.assertIn("rather than creating empty", missing)
+        self.assertIn("steer-project", missing)
+
+        tracker = texts["setup-tracker-variation.md"]
+        for kind in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
+            self.assertIn(kind, tracker)
+        self.assertIn("custom workflow", tracker)
+        self.assertIn("setup-matt-pocock-skills", tracker)
+        for mapping in ("status", "role", "hierarchy", "blocker", "comment"):
+            self.assertIn(mapping, tracker)
+
+        bootstrap = texts["setup-successful-bootstrap.md"]
+        self.assertIn("setup-matt-pocock-skills", bootstrap)
+        self.assertIn("steer-project", bootstrap)
+        self.assertIn("intentionally inactive", bootstrap)
+        self.assertIn("defaults are proposed only when no owner", bootstrap)
 
 
 if __name__ == "__main__":

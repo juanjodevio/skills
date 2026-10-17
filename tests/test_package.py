@@ -21,6 +21,21 @@ def skill_frontmatter(skill_name: str) -> dict[str, str]:
 
 
 class PackageValidationTests(unittest.TestCase):
+    def test_setup_entrypoint_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("setup-project-steering")
+
+        self.assertEqual(metadata["name"], "setup-project-steering")
+        self.assertIn("setup", metadata["description"].lower())
+        skill_text = (ROOT / "skills" / "setup-project-steering" / "SKILL.md").read_text()
+        self.assertIn("setup-matt-pocock-skills", skill_text)
+        self.assertIn("grill-with-docs", skill_text)
+        self.assertIn("steer-project", skill_text)
+        self.assertIn("fails clearly", skill_text.lower())
+        self.assertNotIn("Superpowers", skill_text)
+        for tracker in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
+            self.assertIn(tracker, skill_text)
+        self.assertIn("custom workflow", skill_text.lower())
+
     def test_project_entrypoint_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-project")
 

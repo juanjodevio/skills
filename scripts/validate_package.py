@@ -63,6 +63,7 @@ def validate_modules(suite: dict) -> None:
         fail("defaultEntrypoint must be steer-project")
 
     required = {
+        "setup-project-steering",
         "steer-project",
         "steer-intent",
         "steer-design",
@@ -76,6 +77,12 @@ def validate_modules(suite: dict) -> None:
         fail(f"modules must include {sorted(required)}")
 
     by_name = {module.get("name"): module for module in modules}
+    setup = by_name.get("setup-project-steering", {})
+    if setup.get("role") != "setup":
+        fail("setup-project-steering role must be setup")
+    if "steer-project" not in setup.get("dependencies", []):
+        fail("setup-project-steering must depend on steer-project")
+
     for adapter_name, expected_role in (
         ("steer-intent", "intent-adapter"),
         ("steer-design", "design-adapter"),
@@ -180,6 +187,12 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/multi-artifact-ownership-routing.md",
         "scenarios/multi-artifact-consistency-conflicts.md",
         "scenarios/multi-artifact-mixed-evidence.md",
+        "scenarios/setup-preservation.md",
+        "scenarios/setup-dependency-failure.md",
+        "scenarios/setup-mixed-evidence.md",
+        "scenarios/setup-missing-material-intent.md",
+        "scenarios/setup-tracker-variation.md",
+        "scenarios/setup-successful-bootstrap.md",
     }
     missing = required - set(listed)
     if missing:
@@ -195,6 +208,17 @@ def validate_scenarios(suite: dict) -> None:
     ):
         if token not in multi_text:
             fail(f"multi-artifact-dependency-ordering.md missing {token!r}")
+
+    setup_skill = ROOT / "skills" / "setup-project-steering" / "SKILL.md"
+    setup_text = setup_skill.read_text()
+    for token in (
+        "setup-matt-pocock-skills",
+        "grill-with-docs",
+        "steer-project",
+        "fails clearly",
+    ):
+        if token not in setup_text:
+            fail(f"setup-project-steering/SKILL.md missing {token!r}")
 
 
 def main() -> None:
