@@ -1,62 +1,61 @@
 ---
 name: steer-structure
-description: Maintain docs/STRUCTURE.md as the repository map and ownership guide. Use this skill whenever the user asks where files should live, how a repo is organized, how modules or packages relate, what boundaries agents should respect, or when bootstrapping or refreshing repo structure documentation for future coding agents.
+description: Steer durable repository Structure through the shared Steering workflow. Use this focused adapter for organization, module ownership, placement rules, naming conventions, and generated-content conventions.
 ---
 
 # Steer Structure
 
-Maintain `docs/STRUCTURE.md`. This file helps humans and agents place work in the right part of the repository and understand the boundaries between areas.
+Maintain the Steering artifact configured for `structure`. Delegate the common
+process to `steer-project`; this adapter supplies Structure ownership and
+validation rather than a second workflow.
 
 ## Ownership
 
-Own repository structure truth:
+Structure owns:
 
-- directory map
-- package, module, or app boundaries
-- ownership and responsibility boundaries
-- where new code, tests, docs, assets, scripts, and generated files belong
-- naming and placement conventions
-- assumptions and unknowns about structure
-- last-reviewed metadata
+- repository organization and meaningful relationships between major areas
+- module, package, or area ownership and responsibility boundaries
+- placement rules for new code, tests, docs, assets, scripts, and similar work
+- naming conventions that guide where work belongs
+- generated and temporary content conventions that keep source and artifacts apart
 
-Do not duplicate detailed stack commands from `docs/TECH.md` or product scope from `docs/PRODUCT.md`.
+Structure does not own technology choices or commands, Project purpose or scope,
+delivery sequence, design semantics, decision history, or agent instructions.
+Classify those as related work for their owning adapters.
 
-## Workflow
+## Procedure
 
-1. Read `docs/STRUCTURE.md` if it exists.
-2. Inspect the repository tree, package/workspace files, tests, docs, and generated-file patterns.
-3. Identify real structure before proposing new structure.
-4. Use `AskQuestionTool` where possible for bounded choices, such as where a new domain should live or whether a boundary is intentional.
-5. Ask in plain text when ownership or architecture intent is unclear.
-6. Update only `docs/STRUCTURE.md`.
-7. Record unknown ownership or boundary questions explicitly.
-8. Return cross-doc follow-ups if structure implies tech, product, roadmap, ADR, or `AGENTS.md` updates.
-
-## Suggested Structure
-
-When creating `docs/STRUCTURE.md` from scratch or normalizing a sparse file, read `references/structure-template.md`.
-
-Use this structure unless the repo already has a strong convention:
-
-- Repository Overview
-- Directory Map
-- Ownership Boundaries
-- Placement Rules
-- Tests And Fixtures
-- Generated Files And Artifacts
-- Assumptions
-- Unknowns
-- Last Reviewed
-
-For the directory map, prefer short explanations over exhaustive listings. Mention files and directories that affect where agents should work.
+1. Invoke the shared Steering workflow in `steer-project`.
+2. Resolve `structure` through `.steering.json`; do not assume the artifact is
+   named `STRUCTURE.md`, `docs/STRUCTURE.md`, or any other physical name.
+3. Inspect the relevant software, data, and marketing evidence profiles. Treat
+   the observed tree and package layout as evidence of current organization, not
+   as proof of intended ownership or placement policy.
+4. Ask only questions whose answers materially affect Structure. In particular,
+   confirm ownership boundaries, placement policy, naming, or generated-content
+   conventions when evidence is absent or conflicting.
+5. When the maintainer cannot answer and a safe update remains possible, label
+   provisional claims under `Assumptions` and unanswered decisions under
+   `Unknowns`. Do not present either as settled Structure truth.
+6. Update only the configured Structure Steering artifact, using the existing
+   structure or [Structure template](references/structure-template.md). Keep the
+   artifact concise and navigational; do not expand it into a full file
+   inventory. Prefer Domain-model terms for module ownership and placement.
+7. Run the shared validation, consistency check, and related-work report.
+   Record generated and temporary conventions here without duplicating
+   technology truth.
 
 ## Self-Check
 
-Before finishing, check that:
-
-- documented directories exist or are marked as planned
-- ownership and placement rules are not contradicted by the current repo
-- generated files are not confused with source files
-- technical command details remain in `docs/TECH.md`
-- local links are valid where practical
-- `Last Reviewed` is present or intentionally preserved
+- Observed layout is distinguished from intended ownership and placement policy.
+- Settled claims come from maintainer-provided Structure intent or an explicit,
+  current source of Structure policy.
+- Material conflicts and missing Structure intent caused questions or explicit
+  unknowns.
+- The update stays concise and navigational rather than listing every path.
+- Module ownership and placement rules use Project Domain-model language when
+  the Domain model exists.
+- Generated and temporary conventions do not duplicate technology commands or
+  stack detail.
+- Intent, technology, design, roadmap, decision, and agent-guidance changes are
+  reported as related work rather than edited in this invocation.

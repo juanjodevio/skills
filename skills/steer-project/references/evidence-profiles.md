@@ -7,23 +7,27 @@ asking questions or updating an artifact.
 ## Software
 
 Inspect product-facing documentation, application surfaces, tests, manifests,
-configuration, accepted decisions, releases, and active work. These sources can
-show implemented behavior and technical constraints. They do not prove desired
-audiences, scope, priority, or success.
+automation, configuration, commits, accepted decisions, releases, and active
+work. These sources can show implemented behavior and technical constraints.
+They do not prove desired audiences, scope, priority, success, or intended
+technical direction.
 
 ## Data
 
-Inspect schemas, contracts, lineage, transformations, orchestration, quality
-rules, reports, notebooks, retention controls, and operational metrics. These
-sources can show represented entities and current data use. They do not prove
-the business meaning, intended consumers, acceptable quality, or policy.
+Inspect schemas, contracts, catalogs, lineage, transformations, pipelines,
+orchestration, quality rules, reports, notebooks, retention controls, run
+constraints, and operational metrics. These sources can show represented
+entities and current data use. They do not prove the business meaning, intended
+consumers, acceptable quality, policy, or intended platform direction.
 
 ## Marketing
 
 Inspect campaign briefs, channel plans, calendars, audience definitions,
-approved messaging, creative assets, analytics, and experiment results. These
+approved messaging, creative assets, analytics, platforms, integrations,
+attribution tooling, operational constraints, and experiment results. These
 sources can show delivered messaging and observed performance. They do not
-prove positioning, future audience strategy, promises, or success thresholds.
+prove positioning, future audience strategy, promises, success thresholds, or
+intended tooling direction.
 
 ## Mixed Projects
 

@@ -62,7 +62,15 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
 
-    required = {"steer-project", "steer-intent", "steer-design"}
+    required = {
+        "steer-project",
+        "steer-intent",
+        "steer-design",
+        "steer-structure",
+        "steer-technology",
+        "steer-roadmap",
+        "steer-agent-guidance",
+    }
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
 
@@ -70,12 +78,20 @@ def validate_modules(suite: dict) -> None:
     for adapter_name, expected_role in (
         ("steer-intent", "intent-adapter"),
         ("steer-design", "design-adapter"),
+        ("steer-structure", "structure-adapter"),
+        ("steer-technology", "technology-adapter"),
+        ("steer-roadmap", "roadmap-adapter"),
+        ("steer-agent-guidance", "agent-guidance-adapter"),
     ):
         adapter = by_name.get(adapter_name, {})
         if adapter.get("role") != expected_role:
             fail(f"{adapter_name} role must be {expected_role}")
-        if adapter.get("dependencies") != ["steer-project"]:
+        if "steer-project" not in adapter.get("dependencies", []):
             fail(f"{adapter_name} must depend on steer-project")
+
+    roles = {module.get("name"): module.get("role") for module in modules}
+    if roles.get("steer-agents") != "legacy":
+        fail("steer-agents must remain legacy until removal")
 
     for module in modules:
         name = module.get("name")
@@ -138,6 +154,18 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/design-normal-update.md",
         "scenarios/design-conflicting-evidence.md",
         "scenarios/design-missing-material-intent.md",
+        "scenarios/structure-normal-update.md",
+        "scenarios/structure-conflicting-evidence.md",
+        "scenarios/structure-missing-material-intent.md",
+        "scenarios/technology-normal-update.md",
+        "scenarios/technology-conflicting-evidence.md",
+        "scenarios/technology-missing-material-intent.md",
+        "scenarios/roadmap-normal-update.md",
+        "scenarios/roadmap-conflicting-evidence.md",
+        "scenarios/roadmap-missing-material-intent.md",
+        "scenarios/agent-guidance-normal-update.md",
+        "scenarios/agent-guidance-conflicting-pointers.md",
+        "scenarios/agent-guidance-missing-material-intent.md",
     }
     missing = required - set(listed)
     if missing:

@@ -25,6 +25,42 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_structure_scenarios_exist(self) -> None:
+        required = {
+            "structure-normal-update.md",
+            "structure-conflicting-evidence.md",
+            "structure-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
+    def test_required_technology_scenarios_exist(self) -> None:
+        required = {
+            "technology-normal-update.md",
+            "technology-conflicting-evidence.md",
+            "technology-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
+    def test_required_roadmap_scenarios_exist(self) -> None:
+        required = {
+            "roadmap-normal-update.md",
+            "roadmap-conflicting-evidence.md",
+            "roadmap-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
+    def test_required_agent_guidance_scenarios_exist(self) -> None:
+        required = {
+            "agent-guidance-normal-update.md",
+            "agent-guidance-conflicting-pointers.md",
+            "agent-guidance-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -52,6 +88,88 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn(
             "grill-with-docs",
             texts["design-missing-material-intent.md"],
+        )
+        self.assertIn(
+            "configured artifact path",
+            texts["structure-normal-update.md"],
+        )
+        self.assertIn(
+            "observed layout from intended",
+            texts["structure-conflicting-evidence.md"],
+        )
+        self.assertIn(
+            "asks for material structure",
+            texts["structure-missing-material-intent.md"],
+        )
+
+    def test_technology_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        self.assertIn(
+            "configured artifact path",
+            texts["technology-normal-update.md"],
+        )
+        self.assertIn(
+            "not silently reconciled",
+            texts["technology-conflicting-evidence.md"],
+        )
+        self.assertIn(
+            "asks for material technical direction",
+            texts["technology-missing-material-intent.md"],
+        )
+        tech_joined = "\n".join(
+            texts[name]
+            for name in (
+                "technology-normal-update.md",
+                "technology-conflicting-evidence.md",
+                "technology-missing-material-intent.md",
+            )
+        )
+        for token in (
+            "manifests",
+            "pipelines",
+            "attribution",
+            "decision steering",
+        ):
+            self.assertIn(token, tech_joined)
+
+    def test_roadmap_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        self.assertIn(
+            "configured artifact path",
+            texts["roadmap-normal-update.md"],
+        )
+        self.assertIn(
+            "not inferred from activity alone",
+            texts["roadmap-conflicting-evidence.md"],
+        )
+        self.assertIn(
+            "asks for material sequencing",
+            texts["roadmap-missing-material-intent.md"],
+        )
+        self.assertIn(
+            "Ticket-level execution",
+            texts["roadmap-normal-update.md"],
+        )
+
+    def test_agent_guidance_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        self.assertIn(
+            "writing-for-agents",
+            texts["agent-guidance-normal-update.md"],
+        )
+        self.assertIn(
+            "not silently reconciled",
+            texts["agent-guidance-conflicting-pointers.md"],
+        )
+        self.assertIn(
+            "asks for material Intent",
+            texts["agent-guidance-missing-material-intent.md"],
         )
 
 
