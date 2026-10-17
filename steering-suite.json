@@ -19,6 +19,9 @@
     "scenarios/intent-normal-update.md",
     "scenarios/intent-conflicting-evidence.md",
     "scenarios/intent-missing-material-intent.md",
+    "scenarios/design-normal-update.md",
+    "scenarios/design-conflicting-evidence.md",
+    "scenarios/design-missing-material-intent.md",
     "scenarios/structure-normal-update.md",
     "scenarios/structure-conflicting-evidence.md",
     "scenarios/structure-missing-material-intent.md",
@@ -56,6 +59,16 @@
       ],
       "references": [
         "skills/steer-intent/references/intent-template.md"
+      ]
+    },
+    {
+      "name": "steer-design",
+      "role": "design-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-design/references/design-template.md"
       ]
     },
     {
@@ -110,14 +123,6 @@
       "dependencies": [],
       "references": [
         "skills/steer-tech/references/tech-template.md"
-      ]
-    },
-    {
-      "name": "steer-design",
-      "role": "legacy",
-      "dependencies": [],
-      "references": [
-        "skills/steer-design/references/design-template.md"
       ]
     },
     {

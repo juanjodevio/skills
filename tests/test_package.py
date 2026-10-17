@@ -33,6 +33,13 @@ class PackageValidationTests(unittest.TestCase):
         self.assertEqual(metadata["name"], "steer-intent")
         self.assertIn("Intent", metadata["description"])
 
+    def test_design_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-design")
+
+        self.assertEqual(metadata["name"], "steer-design")
+        self.assertIn("design", metadata["description"].lower())
+        self.assertNotIn("Stitch", metadata["description"])
+
     def test_technology_adapter_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-technology")
 
