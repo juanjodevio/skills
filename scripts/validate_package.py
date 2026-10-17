@@ -206,6 +206,13 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/deliver-work-hierarchy-confirmation.md",
         "scenarios/deliver-work-ticket-approval-roles-blockers.md",
         "scenarios/deliver-work-tracker-variation.md",
+        "scenarios/deliver-work-execute-success-implement-and-retro.md",
+        "scenarios/deliver-work-execute-partial-progress.md",
+        "scenarios/deliver-work-execute-human-blockers-clean-stop.md",
+        "scenarios/deliver-work-execute-resume-approved-tickets.md",
+        "scenarios/deliver-work-execute-tracker-updates-before-downstream.md",
+        "scenarios/deliver-work-execute-retro-on-outcomes.md",
+        "scenarios/deliver-work-execute-non-git-capability-blocker.md",
     }
     missing = required - set(listed)
     if missing:
@@ -240,14 +247,27 @@ def validate_scenarios(suite: dict) -> None:
         "domain-modeling",
         "to-spec",
         "to-tickets",
+        "implement-spec",
+        "retro",
         "shared understanding",
         "Ticket approval",
         ".steering.json",
+        "Frontier",
+        "agent work complete",
+        "partially complete",
     ):
         if token not in deliver_text:
             fail(f"deliver-work/SKILL.md missing {token!r}")
     if "Superpowers" in deliver_text:
         fail("deliver-work must not reference Superpowers")
+    if "subagent execution engine" in deliver_text.lower():
+        fail("deliver-work must not introduce a local subagent execution engine")
+
+    lifecycle = ROOT / "skills" / "deliver-work" / "references" / "lifecycle-stages.md"
+    lifecycle_text = lifecycle.read_text()
+    for token in ("implement-spec", "retro", "Frontier"):
+        if token not in lifecycle_text:
+            fail(f"lifecycle-stages.md missing {token!r}")
 
 
 def main() -> None:

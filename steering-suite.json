@@ -56,7 +56,14 @@
     "scenarios/deliver-work-skip-approved-tickets.md",
     "scenarios/deliver-work-hierarchy-confirmation.md",
     "scenarios/deliver-work-ticket-approval-roles-blockers.md",
-    "scenarios/deliver-work-tracker-variation.md"
+    "scenarios/deliver-work-tracker-variation.md",
+    "scenarios/deliver-work-execute-success-implement-and-retro.md",
+    "scenarios/deliver-work-execute-partial-progress.md",
+    "scenarios/deliver-work-execute-human-blockers-clean-stop.md",
+    "scenarios/deliver-work-execute-resume-approved-tickets.md",
+    "scenarios/deliver-work-execute-tracker-updates-before-downstream.md",
+    "scenarios/deliver-work-execute-retro-on-outcomes.md",
+    "scenarios/deliver-work-execute-non-git-capability-blocker.md"
   ],
   "modules": [
     {
@@ -77,7 +84,8 @@
       "references": [
         "skills/deliver-work/references/lifecycle-stages.md",
         "skills/deliver-work/references/hierarchy.md",
-        "skills/deliver-work/references/tracker-publication.md"
+        "skills/deliver-work/references/tracker-publication.md",
+        "skills/deliver-work/references/execution.md"
       ]
     },
     {

@@ -103,6 +103,13 @@ class ScenarioValidationTests(unittest.TestCase):
             "deliver-work-hierarchy-confirmation.md",
             "deliver-work-ticket-approval-roles-blockers.md",
             "deliver-work-tracker-variation.md",
+            "deliver-work-execute-success-implement-and-retro.md",
+            "deliver-work-execute-partial-progress.md",
+            "deliver-work-execute-human-blockers-clean-stop.md",
+            "deliver-work-execute-resume-approved-tickets.md",
+            "deliver-work-execute-tracker-updates-before-downstream.md",
+            "deliver-work-execute-retro-on-outcomes.md",
+            "deliver-work-execute-non-git-capability-blocker.md",
         }
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
@@ -344,6 +351,50 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn("custom", tracker.lower())
         self.assertIn("equivalent", tracker.lower())
         self.assertIn(".steering.json", tracker)
+
+        success = texts["deliver-work-execute-success-implement-and-retro.md"]
+        self.assertIn("implement-spec", success)
+        self.assertIn("retro", success)
+        self.assertIn("agent work complete", success)
+        self.assertNotIn("Superpowers", success)
+
+        partial = texts["deliver-work-execute-partial-progress.md"]
+        self.assertIn("partially complete", partial)
+        self.assertIn("Frontier", partial)
+        self.assertIn("implement-spec", partial)
+        self.assertIn("retro", partial)
+
+        human = texts["deliver-work-execute-human-blockers-clean-stop.md"]
+        self.assertIn("human", human.lower())
+        self.assertIn("blocked", human.lower())
+        self.assertIn("indefinite polling", human.lower())
+        self.assertIn("retro", human)
+
+        resume_exec = texts["deliver-work-execute-resume-approved-tickets.md"]
+        self.assertIn("implement-spec", resume_exec)
+        self.assertIn("approved Tickets", resume_exec)
+        self.assertIn("without repeating", resume_exec.lower())
+        self.assertIn("not re-invoked", resume_exec.lower())
+
+        tracker_exec = texts[
+            "deliver-work-execute-tracker-updates-before-downstream.md"
+        ]
+        self.assertIn("before downstream", tracker_exec.lower())
+        self.assertIn("Work tracker", tracker_exec)
+        self.assertIn("refresh", tracker_exec.lower())
+
+        retro = texts["deliver-work-execute-retro-on-outcomes.md"]
+        self.assertIn("retro", retro)
+        for outcome in ("final", "blocked", "partial"):
+            self.assertIn(outcome, retro.lower())
+        self.assertIn("work actually performed", retro.lower())
+
+        non_git = texts["deliver-work-execute-non-git-capability-blocker.md"]
+        self.assertIn("non-Git", non_git)
+        self.assertIn("capability blocker", non_git.lower())
+        self.assertIn("preserved", non_git.lower())
+        self.assertIn("approved Specification", non_git)
+        self.assertIn("Tickets", non_git)
 
 
 if __name__ == "__main__":

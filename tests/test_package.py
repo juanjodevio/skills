@@ -47,6 +47,8 @@ class PackageValidationTests(unittest.TestCase):
             "domain-modeling",
             "to-spec",
             "to-tickets",
+            "implement-spec",
+            "retro",
         ):
             self.assertIn(matt, skill_text)
         self.assertIn("shared understanding", skill_text.lower())
@@ -54,13 +56,34 @@ class PackageValidationTests(unittest.TestCase):
         self.assertIn("Ticket approval", skill_text)
         self.assertIn("execution cohesion", skill_text.lower())
         self.assertIn(".steering.json", skill_text)
+        self.assertIn("Frontier", skill_text)
+        self.assertIn("agent work complete", skill_text)
+        self.assertIn("partially complete", skill_text)
+        self.assertIn("capability blocker", skill_text.lower())
         self.assertNotIn("Superpowers", skill_text)
+        self.assertNotIn("subagent execution engine", skill_text.lower())
         for tracker in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
             self.assertIn(tracker, skill_text)
+        lifecycle = (
+            ROOT / "skills" / "deliver-work" / "references" / "lifecycle-stages.md"
+        ).read_text()
+        self.assertIn("implement-spec", lifecycle)
+        self.assertIn("retro", lifecycle)
+        self.assertIn("Frontier", lifecycle)
         suite = (ROOT / "steering-suite.json").read_text()
         self.assertIn('"name": "deliver-work"', suite)
         self.assertIn('"role": "work-lifecycle"', suite)
         self.assertIn('"defaultWorkLifecycle": "deliver-work"', suite)
+        for scenario in (
+            "scenarios/deliver-work-execute-success-implement-and-retro.md",
+            "scenarios/deliver-work-execute-partial-progress.md",
+            "scenarios/deliver-work-execute-human-blockers-clean-stop.md",
+            "scenarios/deliver-work-execute-resume-approved-tickets.md",
+            "scenarios/deliver-work-execute-tracker-updates-before-downstream.md",
+            "scenarios/deliver-work-execute-retro-on-outcomes.md",
+            "scenarios/deliver-work-execute-non-git-capability-blocker.md",
+        ):
+            self.assertIn(scenario, suite)
 
     def test_project_entrypoint_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-project")

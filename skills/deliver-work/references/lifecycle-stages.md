@@ -1,10 +1,9 @@
 # Work Lifecycle Stages
 
-`deliver-work` coordinates the **shape** half of the Work lifecycle. Later
-stages (execution and retrospective) extend this coordinator without changing
-the resume rules below.
+`deliver-work` coordinates the full default Work lifecycle: shape, execute, and
+retrospective. Resume rules below decide where a request begins.
 
-## Shape stages (this module)
+## Shape stages
 
 | Stage | Matt skill (by name) | Completion |
 | --- | --- | --- |
@@ -13,26 +12,41 @@ the resume rules below.
 | Synthesize Specification | `to-spec` | Test seams gate passed; one canonical Specification record |
 | Decompose Tickets | `to-tickets` | Ticket approval gate passed (roles + blockers) |
 
+Shape-only completion (Tickets approved, execution not started this run) reports
+outcome **Specification complete**.
+
+## Execute and retrospective stages
+
+| Stage | Matt skill (by name) | Completion |
+| --- | --- | --- |
+| Execute Ticket graph | `implement-spec` | Frontier drained, blocked on humans/capability, or partial stop |
+| Retrospective | `retro` | One invocation per final, blocked, or partial execution outcome |
+
+See [execution](execution.md) for Frontier rules, tracker refresh, outcomes, and
+summary posting.
+
 ## Resume rules
 
 - **New request / unresolved intent** → begin at `grill-with-docs`.
 - **Approved Specification** (canonical record exists; Tickets not yet approved)
   → resume at `to-tickets`; skip grill and Specification synthesis.
-- **Approved Tickets** → skip all completed shape stages; report the Frontier
-  (unfinished agent Tickets whose blockers are complete) and stop.
+- **Approved Tickets** → skip all completed shape stages; resume directly at
+  `implement-spec` without repeating grilling, Specification, or decomposition.
+  Refresh Ticket state/blockers from the Work tracker, then compute the
+  Frontier (unfinished agent Tickets whose blockers are complete).
 
 Detect approval from the configured Work tracker status and role mappings in
 `.steering.json`, not from ad hoc file conventions.
 
-## Extension point (not implemented here)
+## Extension discipline
 
-Future Work lifecycle stages attach after Ticket approval:
+Execution and retrospective attach after Ticket approval on **this**
+coordinator:
 
-1. **Execute** — run Frontier Tickets in fresh agent contexts.
-2. **Retrospective** — capture learning back into Steering artifacts / Domain
-   model as appropriate.
+1. **Execute** — delegate Frontier work to `implement-spec` by name.
+2. **Retrospective** — invoke `retro` once when an execution run ends final,
+   blocked, or partial.
 
-Those stages must reuse the same `.steering.json` workTracker mappings and must
-not reopen completed shape gates unless the maintainer explicitly restarts
-shaping. Implement them as an extension of this coordinator, not as a second
-lifecycle entrypoint.
+Reuse the same `.steering.json` workTracker mappings. Do not reopen completed
+shape gates unless the maintainer explicitly restarts shaping. Do not add a
+second lifecycle entrypoint.

@@ -31,5 +31,19 @@ lifecycle outcomes are equivalent:
 - approved Tickets with roles and blockers
 - hierarchy recommendation applied (after confirmation when ambiguous)
 - resume state detectable from status/role mappings
+- Ticket progress and blockers refreshed during execution
+- one execution summary comment per run on the Specification record
 
 Only the storage shape changes with `workTracker.kind`.
+
+## Execution publication
+
+During and after Ticket execution:
+
+1. Refresh Ticket status and blocker mappings before Frontier computation and
+   after each meaningful progress step.
+2. Write each reviewed Ticket's completion to the tracker **before** downstream
+   Tickets rely on it.
+3. Post one concise execution summary to the canonical Specification via
+   `commentActivity` (completed Tickets, blockers, next Frontier,
+   branch/review reference). Do not paste Ticket bodies into that summary.
