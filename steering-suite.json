@@ -18,7 +18,10 @@
   "scenarios": [
     "scenarios/intent-normal-update.md",
     "scenarios/intent-conflicting-evidence.md",
-    "scenarios/intent-missing-material-intent.md"
+    "scenarios/intent-missing-material-intent.md",
+    "scenarios/technology-normal-update.md",
+    "scenarios/technology-conflicting-evidence.md",
+    "scenarios/technology-missing-material-intent.md"
   ],
   "modules": [
     {
@@ -38,6 +41,16 @@
       ],
       "references": [
         "skills/steer-intent/references/intent-template.md"
+      ]
+    },
+    {
+      "name": "steer-technology",
+      "role": "technology-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-technology/references/technology-template.md"
       ]
     },
     {

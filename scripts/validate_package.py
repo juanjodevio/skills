@@ -62,7 +62,7 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
 
-    required = {"steer-project", "steer-intent"}
+    required = {"steer-project", "steer-intent", "steer-technology"}
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
 
@@ -124,6 +124,9 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/intent-normal-update.md",
         "scenarios/intent-conflicting-evidence.md",
         "scenarios/intent-missing-material-intent.md",
+        "scenarios/technology-normal-update.md",
+        "scenarios/technology-conflicting-evidence.md",
+        "scenarios/technology-missing-material-intent.md",
     }
     missing = required - set(listed)
     if missing:
