@@ -24,8 +24,9 @@ Use this workflow for every Steering request:
 2. **Classify ownership.** Name the single truth type that owns the request and
    select its focused adapter. For an Intent request, use `steer-intent`. For a
    technology request, use `steer-technology`. For a Structure request, use
-   `steer-structure`. If the request spans truth types, choose the primary owner
-   and report the remainder as related work.
+   `steer-structure`. For a Roadmap sequencing request, use `steer-roadmap`.
+   If the request spans truth types, choose the primary owner and report the
+   remainder as related work.
 3. **Resolve material unknowns.** Ask concise questions when an answer could
    materially change the artifact. Prefer bounded questions for bounded choices.
    If the maintainer is unavailable and a safe update remains possible, record

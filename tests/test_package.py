@@ -47,6 +47,13 @@ class PackageValidationTests(unittest.TestCase):
         self.assertIn("structure", metadata["description"].lower())
         self.assertIn("Steering workflow", metadata["description"])
 
+    def test_roadmap_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-roadmap")
+
+        self.assertEqual(metadata["name"], "steer-roadmap")
+        self.assertIn("Roadmap", metadata["description"])
+        self.assertIn("Steering workflow", metadata["description"])
+
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(
             [sys.executable, "scripts/validate_package.py"],

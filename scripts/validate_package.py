@@ -67,6 +67,7 @@ def validate_modules(suite: dict) -> None:
         "steer-intent",
         "steer-structure",
         "steer-technology",
+        "steer-roadmap",
     }
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
@@ -83,6 +84,12 @@ def validate_modules(suite: dict) -> None:
         fail("steer-technology must be registered as technology-adapter")
     if "steer-project" not in technology.get("dependencies", []):
         fail("steer-technology must depend on steer-project")
+
+    roadmap = by_name["steer-roadmap"]
+    if roadmap.get("role") != "roadmap-adapter":
+        fail("steer-roadmap must be registered as roadmap-adapter")
+    if roadmap.get("dependencies") != ["steer-project"]:
+        fail("steer-roadmap must depend on steer-project")
 
     for module in modules:
         name = module.get("name")
@@ -148,6 +155,9 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/technology-normal-update.md",
         "scenarios/technology-conflicting-evidence.md",
         "scenarios/technology-missing-material-intent.md",
+        "scenarios/roadmap-normal-update.md",
+        "scenarios/roadmap-conflicting-evidence.md",
+        "scenarios/roadmap-missing-material-intent.md",
     }
     missing = required - set(listed)
     if missing:
