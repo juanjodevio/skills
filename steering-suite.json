@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "defaultEntrypoint": "steer-project",
+  "defaultWorkLifecycle": "deliver-work",
   "workflowStages": [
     "inspect-evidence",
     "classify-ownership",
@@ -49,7 +50,13 @@
     "scenarios/setup-mixed-evidence.md",
     "scenarios/setup-missing-material-intent.md",
     "scenarios/setup-tracker-variation.md",
-    "scenarios/setup-successful-bootstrap.md"
+    "scenarios/setup-successful-bootstrap.md",
+    "scenarios/deliver-work-new-request-starts-at-grill.md",
+    "scenarios/deliver-work-resume-approved-specification.md",
+    "scenarios/deliver-work-skip-approved-tickets.md",
+    "scenarios/deliver-work-hierarchy-confirmation.md",
+    "scenarios/deliver-work-ticket-approval-roles-blockers.md",
+    "scenarios/deliver-work-tracker-variation.md"
   ],
   "modules": [
     {
@@ -61,6 +68,16 @@
       "references": [
         "skills/setup-project-steering/references/configuration-schema.md",
         "skills/setup-project-steering/references/tracker-configuration.md"
+      ]
+    },
+    {
+      "name": "deliver-work",
+      "role": "work-lifecycle",
+      "dependencies": [],
+      "references": [
+        "skills/deliver-work/references/lifecycle-stages.md",
+        "skills/deliver-work/references/hierarchy.md",
+        "skills/deliver-work/references/tracker-publication.md"
       ]
     },
     {

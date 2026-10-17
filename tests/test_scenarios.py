@@ -95,6 +95,18 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_deliver_work_scenarios_exist(self) -> None:
+        required = {
+            "deliver-work-new-request-starts-at-grill.md",
+            "deliver-work-resume-approved-specification.md",
+            "deliver-work-skip-approved-tickets.md",
+            "deliver-work-hierarchy-confirmation.md",
+            "deliver-work-ticket-approval-roles-blockers.md",
+            "deliver-work-tracker-variation.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -292,6 +304,46 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn("steer-project", bootstrap)
         self.assertIn("intentionally inactive", bootstrap)
         self.assertIn("defaults are proposed only when no owner", bootstrap)
+
+    def test_deliver_work_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        new_request = texts["deliver-work-new-request-starts-at-grill.md"]
+        self.assertIn("grill-with-docs", new_request)
+        self.assertIn("domain-modeling", new_request)
+        self.assertIn("to-spec", new_request)
+        self.assertIn("shared understanding", new_request.lower())
+        self.assertIn("test seam", new_request.lower())
+
+        resume = texts["deliver-work-resume-approved-specification.md"]
+        self.assertIn("to-tickets", resume)
+        self.assertIn("approved Specification", resume)
+        self.assertIn("resumes at", resume.lower())
+
+        skip = texts["deliver-work-skip-approved-tickets.md"]
+        self.assertIn("skip", skip.lower())
+        self.assertIn("approved Tickets", skip)
+
+        hierarchy = texts["deliver-work-hierarchy-confirmation.md"]
+        self.assertIn("execution cohesion", hierarchy.lower())
+        self.assertIn("ordinary Specification", hierarchy)
+        self.assertIn("project/epic", hierarchy.lower())
+        self.assertIn("multi-Specification", hierarchy)
+        self.assertIn("confirm", hierarchy.lower())
+
+        approval = texts["deliver-work-ticket-approval-roles-blockers.md"]
+        self.assertIn("agent-ready", approval)
+        self.assertIn("human-ready", approval)
+        self.assertIn("block", approval.lower())
+        self.assertIn("Ticket approval", approval)
+
+        tracker = texts["deliver-work-tracker-variation.md"]
+        for kind in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
+            self.assertIn(kind, tracker)
+        self.assertIn("custom", tracker.lower())
+        self.assertIn("equivalent", tracker.lower())
+        self.assertIn(".steering.json", tracker)
 
 
 if __name__ == "__main__":

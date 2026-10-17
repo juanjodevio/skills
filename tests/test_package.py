@@ -36,6 +36,32 @@ class PackageValidationTests(unittest.TestCase):
             self.assertIn(tracker, skill_text)
         self.assertIn("custom workflow", skill_text.lower())
 
+    def test_deliver_work_is_discoverable_as_work_lifecycle_coordinator(self) -> None:
+        metadata = skill_frontmatter("deliver-work")
+
+        self.assertEqual(metadata["name"], "deliver-work")
+        self.assertIn("Work lifecycle", metadata["description"])
+        skill_text = (ROOT / "skills" / "deliver-work" / "SKILL.md").read_text()
+        for matt in (
+            "grill-with-docs",
+            "domain-modeling",
+            "to-spec",
+            "to-tickets",
+        ):
+            self.assertIn(matt, skill_text)
+        self.assertIn("shared understanding", skill_text.lower())
+        self.assertIn("test seam", skill_text.lower())
+        self.assertIn("Ticket approval", skill_text)
+        self.assertIn("execution cohesion", skill_text.lower())
+        self.assertIn(".steering.json", skill_text)
+        self.assertNotIn("Superpowers", skill_text)
+        for tracker in ("Linear", "GitHub", "GitLab", "Jira", "local Markdown"):
+            self.assertIn(tracker, skill_text)
+        suite = (ROOT / "steering-suite.json").read_text()
+        self.assertIn('"name": "deliver-work"', suite)
+        self.assertIn('"role": "work-lifecycle"', suite)
+        self.assertIn('"defaultWorkLifecycle": "deliver-work"', suite)
+
     def test_project_entrypoint_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-project")
 

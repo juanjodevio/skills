@@ -61,6 +61,8 @@ def validate_modules(suite: dict) -> None:
 
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
+    if suite.get("defaultWorkLifecycle") != "deliver-work":
+        fail("defaultWorkLifecycle must be deliver-work")
 
     required = {
         "setup-project-steering",
@@ -72,6 +74,7 @@ def validate_modules(suite: dict) -> None:
         "steer-roadmap",
         "steer-agent-guidance",
         "steer-decisions",
+        "deliver-work",
     }
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
@@ -82,6 +85,10 @@ def validate_modules(suite: dict) -> None:
         fail("setup-project-steering role must be setup")
     if "steer-project" not in setup.get("dependencies", []):
         fail("setup-project-steering must depend on steer-project")
+
+    deliver = by_name.get("deliver-work", {})
+    if deliver.get("role") != "work-lifecycle":
+        fail("deliver-work role must be work-lifecycle")
 
     for adapter_name, expected_role in (
         ("steer-intent", "intent-adapter"),
@@ -193,6 +200,12 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/setup-missing-material-intent.md",
         "scenarios/setup-tracker-variation.md",
         "scenarios/setup-successful-bootstrap.md",
+        "scenarios/deliver-work-new-request-starts-at-grill.md",
+        "scenarios/deliver-work-resume-approved-specification.md",
+        "scenarios/deliver-work-skip-approved-tickets.md",
+        "scenarios/deliver-work-hierarchy-confirmation.md",
+        "scenarios/deliver-work-ticket-approval-roles-blockers.md",
+        "scenarios/deliver-work-tracker-variation.md",
     }
     missing = required - set(listed)
     if missing:
@@ -219,6 +232,22 @@ def validate_scenarios(suite: dict) -> None:
     ):
         if token not in setup_text:
             fail(f"setup-project-steering/SKILL.md missing {token!r}")
+
+    deliver_skill = ROOT / "skills" / "deliver-work" / "SKILL.md"
+    deliver_text = deliver_skill.read_text()
+    for token in (
+        "grill-with-docs",
+        "domain-modeling",
+        "to-spec",
+        "to-tickets",
+        "shared understanding",
+        "Ticket approval",
+        ".steering.json",
+    ):
+        if token not in deliver_text:
+            fail(f"deliver-work/SKILL.md missing {token!r}")
+    if "Superpowers" in deliver_text:
+        fail("deliver-work must not reference Superpowers")
 
 
 def main() -> None:
