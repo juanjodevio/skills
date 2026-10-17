@@ -1,3 +1,6 @@
 docs/superpowers/**
 evals/
 skills/*-workspace/
+__pycache__/
+*.pyc
+.pytest_cache/

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "defaultEntrypoint": "steer-project",
+  "workflowStages": [
+    "inspect-evidence",
+    "classify-ownership",
+    "resolve-material-unknowns",
+    "update-one-artifact",
+    "validate-artifact",
+    "check-consistency",
+    "report-related-work"
+  ],
+  "evidenceProfiles": [
+    "software",
+    "data",
+    "marketing"
+  ],
+  "scenarios": [
+    "scenarios/intent-normal-update.md",
+    "scenarios/intent-conflicting-evidence.md",
+    "scenarios/intent-missing-material-intent.md"
+  ],
+  "modules": [
+    {
+      "name": "steer-project",
+      "role": "entrypoint",
+      "dependencies": [],
+      "references": [
+        "skills/steer-project/references/configuration.md",
+        "skills/steer-project/references/evidence-profiles.md"
+      ]
+    },
+    {
+      "name": "steer-intent",
+      "role": "intent-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-intent/references/intent-template.md"
+      ]
+    },
+    {
+      "name": "product-steering",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/product-steering/references/drift-review-checklist.md"
+      ]
+    },
+    {
+      "name": "steer-product",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-product/references/product-template.md"
+      ]
+    },
+    {
+      "name": "steer-tech",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-tech/references/tech-template.md"
+      ]
+    },
+    {
+      "name": "steer-design",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-design/references/design-template.md"
+      ]
+    },
+    {
+      "name": "steer-roadmap",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-roadmap/references/roadmap-template.md"
+      ]
+    },
+    {
+      "name": "steer-structure",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-structure/references/structure-template.md"
+      ]
+    },
+    {
+      "name": "steer-adr",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-adr/references/compact-madr-template.md"
+      ]
+    },
+    {
+      "name": "steer-agents",
+      "role": "legacy",
+      "dependencies": [],
+      "references": [
+        "skills/steer-agents/references/agents-template.md"
+      ]
+    }
+  ]
+}
