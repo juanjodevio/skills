@@ -7,7 +7,8 @@ from the Project's `.steering.json` file:
 {
   "artifacts": {
     "intent": "docs/INTENT.md",
-    "technology": "docs/TECH.md"
+    "technology": "docs/TECH.md",
+    "structure": "docs/STRUCTURE.md"
   }
 }
 ```
@@ -16,10 +17,11 @@ Resolve relative paths from the Project root. A configured path may use any
 filename or directory. Never infer ownership from a familiar basename.
 
 When `.steering.json` or the requested mapping is absent, propose
-`docs/INTENT.md` as the Intent default or `docs/TECH.md` as the Technology
-default, and ask before creating it if another location is plausible. Existing
-Projects may instead confirm that default in conversation. Do not create
-configuration merely to document an assumption.
+`docs/INTENT.md` as the Intent default, `docs/TECH.md` as the Technology
+default, and `docs/STRUCTURE.md` as the Structure default, and ask before
+creating any of them if another location is plausible. Existing Projects may
+instead confirm those defaults in conversation. Do not create configuration
+merely to document an assumption.
 
 Treat malformed configuration, duplicate ownership, paths outside the Project,
 and mappings to non-file targets as blocking configuration errors. Report them

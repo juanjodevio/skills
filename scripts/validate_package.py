@@ -62,9 +62,27 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
 
-    required = {"steer-project", "steer-intent", "steer-technology"}
+    required = {
+        "steer-project",
+        "steer-intent",
+        "steer-structure",
+        "steer-technology",
+    }
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
+
+    by_name = {module.get("name"): module for module in modules}
+    structure = by_name.get("steer-structure", {})
+    if structure.get("role") != "structure-adapter":
+        fail("steer-structure must be registered as structure-adapter")
+    if "steer-project" not in structure.get("dependencies", []):
+        fail("steer-structure must depend on steer-project")
+
+    technology = by_name.get("steer-technology", {})
+    if technology.get("role") != "technology-adapter":
+        fail("steer-technology must be registered as technology-adapter")
+    if "steer-project" not in technology.get("dependencies", []):
+        fail("steer-technology must depend on steer-project")
 
     for module in modules:
         name = module.get("name")
@@ -124,6 +142,9 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/intent-normal-update.md",
         "scenarios/intent-conflicting-evidence.md",
         "scenarios/intent-missing-material-intent.md",
+        "scenarios/structure-normal-update.md",
+        "scenarios/structure-conflicting-evidence.md",
+        "scenarios/structure-missing-material-intent.md",
         "scenarios/technology-normal-update.md",
         "scenarios/technology-conflicting-evidence.md",
         "scenarios/technology-missing-material-intent.md",

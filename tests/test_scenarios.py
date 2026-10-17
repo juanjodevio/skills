@@ -16,6 +16,15 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_structure_scenarios_exist(self) -> None:
+        required = {
+            "structure-normal-update.md",
+            "structure-conflicting-evidence.md",
+            "structure-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_required_technology_scenarios_exist(self) -> None:
         required = {
             "technology-normal-update.md",
@@ -43,6 +52,18 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn(
             "asks for material Intent",
             texts["intent-missing-material-intent.md"],
+        )
+        self.assertIn(
+            "configured artifact path",
+            texts["structure-normal-update.md"],
+        )
+        self.assertIn(
+            "observed layout from intended",
+            texts["structure-conflicting-evidence.md"],
+        )
+        self.assertIn(
+            "asks for material structure",
+            texts["structure-missing-material-intent.md"],
         )
 
     def test_technology_scenarios_cover_required_outcomes(self) -> None:
