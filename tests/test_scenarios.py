@@ -16,6 +16,15 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_design_scenarios_exist(self) -> None:
+        required = {
+            "design-normal-update.md",
+            "design-conflicting-evidence.md",
+            "design-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -34,6 +43,15 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn(
             "asks for material Intent",
             texts["intent-missing-material-intent.md"],
+        )
+        self.assertIn("configured artifact path", texts["design-normal-update.md"])
+        self.assertIn(
+            "not silently reconciled",
+            texts["design-conflicting-evidence.md"],
+        )
+        self.assertIn(
+            "grill-with-docs",
+            texts["design-missing-material-intent.md"],
         )
 
 
