@@ -43,6 +43,15 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_agent_guidance_scenarios_exist(self) -> None:
+        required = {
+            "agent-guidance-normal-update.md",
+            "agent-guidance-conflicting-pointers.md",
+            "agent-guidance-missing-material-intent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -126,6 +135,23 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn(
             "Ticket-level execution",
             texts["roadmap-normal-update.md"],
+        )
+
+    def test_agent_guidance_scenarios_cover_required_outcomes(self) -> None:
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        self.assertIn(
+            "writing-for-agents",
+            texts["agent-guidance-normal-update.md"],
+        )
+        self.assertIn(
+            "not silently reconciled",
+            texts["agent-guidance-conflicting-pointers.md"],
+        )
+        self.assertIn(
+            "asks for material Intent",
+            texts["agent-guidance-missing-material-intent.md"],
         )
 
 

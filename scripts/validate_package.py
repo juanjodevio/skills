@@ -68,6 +68,7 @@ def validate_modules(suite: dict) -> None:
         "steer-structure",
         "steer-technology",
         "steer-roadmap",
+        "steer-agent-guidance",
     }
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
@@ -90,6 +91,12 @@ def validate_modules(suite: dict) -> None:
         fail("steer-roadmap must be registered as roadmap-adapter")
     if roadmap.get("dependencies") != ["steer-project"]:
         fail("steer-roadmap must depend on steer-project")
+
+    roles = {module.get("name"): module.get("role") for module in modules}
+    if roles.get("steer-agent-guidance") != "agent-guidance-adapter":
+        fail("steer-agent-guidance must have role agent-guidance-adapter")
+    if roles.get("steer-agents") != "legacy":
+        fail("steer-agents must remain legacy until removal")
 
     for module in modules:
         name = module.get("name")
@@ -158,6 +165,9 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/roadmap-normal-update.md",
         "scenarios/roadmap-conflicting-evidence.md",
         "scenarios/roadmap-missing-material-intent.md",
+        "scenarios/agent-guidance-normal-update.md",
+        "scenarios/agent-guidance-conflicting-pointers.md",
+        "scenarios/agent-guidance-missing-material-intent.md",
     }
     missing = required - set(listed)
     if missing:
