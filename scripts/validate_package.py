@@ -178,6 +178,7 @@ def validate_core_skill_contracts() -> None:
         "grill-with-docs",
         "steer-project",
         "fails clearly",
+        "Implementation discipline",
     ):
         if token not in setup_text:
             fail(f"setup-project-steering/SKILL.md missing {token!r}")
@@ -196,6 +197,8 @@ def validate_core_skill_contracts() -> None:
         "Frontier",
         "agent work complete",
         "partially complete",
+        "Implementation discipline",
+        "docs/agents/implementation-discipline.md",
     ):
         if token not in deliver_text:
             fail(f"deliver-work/SKILL.md missing {token!r}")
@@ -209,6 +212,46 @@ def validate_core_skill_contracts() -> None:
     for token in ("implement-spec", "retro", "Frontier"):
         if token not in lifecycle_text:
             fail(f"lifecycle-stages.md missing {token!r}")
+
+    execution = ROOT / "skills" / "deliver-work" / "references" / "execution.md"
+    execution_text = execution.read_text()
+    for token in (
+        "Implementation discipline",
+        "docs/agents/implementation-discipline.md",
+        "evidenceAdapters",
+    ):
+        if token not in execution_text:
+            fail(f"execution.md missing {token!r}")
+
+    guidance = (ROOT / "skills" / "steer-agent-guidance" / "SKILL.md").read_text()
+    for token in (
+        "Implementation discipline",
+        "implementation-discipline.md",
+        "evidenceAdapters",
+        "marketing-only",
+    ):
+        if token not in guidance:
+            fail(f"steer-agent-guidance/SKILL.md missing {token!r}")
+
+    seed = (
+        ROOT
+        / "skills"
+        / "steer-agent-guidance"
+        / "references"
+        / "implementation-discipline.md"
+    )
+    if not seed.is_file():
+        fail("missing implementation-discipline seed reference")
+    seed_text = seed.read_text()
+    for token in (
+        "Think Before Coding",
+        "Simplicity First",
+        "Surgical Changes",
+        "Goal-Driven Execution",
+        "andrej-karpathy-skills",
+    ):
+        if token not in seed_text:
+            fail(f"implementation-discipline.md missing {token!r}")
 
     project = (ROOT / "skills" / "steer-project" / "SKILL.md").read_text()
     for token in (

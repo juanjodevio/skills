@@ -68,7 +68,13 @@ invent a reduced local substitute.
 8. **Capability gate before execution.** If the Project is not a Git repository,
    stop before `implement-spec` with a clear **capability blocker**. Preserve
    the approved Specification and Tickets; do not reopen shape gates.
-9. **Execute the Frontier.** Refresh Ticket state and blockers from the
+9. **Implementation discipline read.** When `.steering.json` `evidenceAdapters`
+   includes `software` and/or `data`, read
+   `docs/agents/implementation-discipline.md` before invoking `implement-spec`.
+   If the file is missing, stop and report that `steer-agent-guidance` (or setup
+   bootstrap) must materialize it. Skip this read on marketing-only Projects.
+   Details: [execution](references/execution.md).
+10. **Execute the Frontier.** Refresh Ticket state and blockers from the
    configured Work tracker. Compute the Frontier (unfinished agent-ready
    Tickets whose blockers are complete) per [execution](references/execution.md).
    Delegate ticket-graph execution to `implement-spec` by name only — never a
@@ -77,12 +83,12 @@ invent a reduced local substitute.
    cleanly (outcome **blocked**); do not poll indefinitely.
    Update each reviewed Ticket in the Work tracker **before** downstream work
    relies on that completion. Recompute the Frontier after each refresh.
-10. **Report execution outcome.** Distinguish **Specification complete**,
+11. **Report execution outcome.** Distinguish **Specification complete**,
     **agent work complete**, **blocked**, and **partially complete**. After each
     execution run, post one concise summary to the canonical Specification
     record: completed Tickets, blockers, next Frontier, and branch/review
     reference — without duplicating Ticket bodies.
-11. **Retrospective.** Invoke `retro` once for each final (**agent work
+12. **Retrospective.** Invoke `retro` once for each final (**agent work
     complete**), **blocked**, or **partially complete** execution outcome.
     Scope findings to work actually performed.
 

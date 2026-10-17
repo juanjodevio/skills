@@ -13,7 +13,8 @@ install surface.
   installable content for `npx skills add`
 - `docs/`: human/agent suite docs (catalog, install, migration, work tracker,
   design-md attribution)
-- `docs/agents/`: tracker, triage, and Domain setup docs
+- `docs/agents/`: tracker, triage, Domain setup docs, and Implementation
+  discipline (software/data Projects)
 - `docs/adr/`: decision records and status-bearing index
 - `scripts/`: packaging inventory scripts
 - `tests/`: packaging/inventory unit tests
@@ -28,6 +29,9 @@ install surface.
   do not duplicate their content into `AGENTS.md`
 - **Tracker / triage / Domain setup**: `docs/agents/` and the `## Agent skills`
   block; do not reimplement that setup inside suite skills
+- **Implementation discipline**: seed in `steer-agent-guidance` references;
+  Project copy at `docs/agents/implementation-discipline.md` when
+  `evidenceAdapters` includes software and/or data (ADR-0002)
 - **Domain language**: `GLOSSARY.md` and ADRs; skills use glossary terms
 
 ## Placement Rules

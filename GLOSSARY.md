@@ -47,3 +47,7 @@ _Avoid_: Linear, issue tracker
 **Frontier**:
 Every unfinished agent ticket whose blocking tickets are complete and which can therefore execute now.
 _Avoid_: Queue, backlog
+
+**Implementation discipline**:
+Compact agent guidance for software and data implementation work: surface assumptions, prefer simplicity, make surgical changes, and verify against success criteria.
+_Avoid_: Coding standards, Karpathy rules, CLAUDE.md guidelines

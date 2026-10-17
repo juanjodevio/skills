@@ -24,7 +24,7 @@ not Work lifecycle stages.
 | `steer-roadmap` | Delivery sequence (now/next/later, non-goals, risks). |
 | `steer-structure` | Repository structure (layout, boundaries, ownership). |
 | `steer-decisions` | Decision records / ADRs (eligible durable decisions and supersession). |
-| `steer-agent-guidance` | Compact agent guidance (`AGENTS.md` / vendor equivalents) with pointers into Steering artifacts. |
+| `steer-agent-guidance` | Compact agent guidance (`AGENTS.md` / vendor equivalents) with pointers into Steering artifacts; materializes Implementation discipline for software/data evidence adapters. |
 
 ## Default Work lifecycle
 
@@ -57,3 +57,4 @@ warrants it.
 - [Migration from the legacy suite](migration.md)
 - [Domain language](../GLOSSARY.md)
 - [Architecture ADR](adr/0001-rebuild-as-cross-domain-project-steering-suite.md)
+- [Implementation discipline ADR](adr/0002-implementation-discipline-for-software-and-data.md)

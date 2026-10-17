@@ -135,6 +135,28 @@ class PackageValidationTests(unittest.TestCase):
         skill_text = (ROOT / "skills" / "steer-agent-guidance" / "SKILL.md").read_text()
         self.assertIn("writing-for-agents", skill_text)
         self.assertIn("steer-project", skill_text)
+        self.assertIn("Implementation discipline", skill_text)
+        seed = (
+            ROOT
+            / "skills"
+            / "steer-agent-guidance"
+            / "references"
+            / "implementation-discipline.md"
+        )
+        self.assertTrue(seed.is_file())
+        self.assertIn("andrej-karpathy-skills", seed.read_text())
+
+    def test_implementation_discipline_is_wired_for_software_data(self) -> None:
+        project_copy = ROOT / "docs" / "agents" / "implementation-discipline.md"
+        self.assertTrue(project_copy.is_file())
+        agents = (ROOT / "AGENTS.md").read_text()
+        self.assertIn("docs/agents/implementation-discipline.md", agents)
+        deliver = (ROOT / "skills" / "deliver-work" / "SKILL.md").read_text()
+        self.assertIn("docs/agents/implementation-discipline.md", deliver)
+        adr_index = (ROOT / "docs" / "adr" / "index.md").read_text()
+        self.assertIn("0002-implementation-discipline-for-software-and-data.md", adr_index)
+        glossary = (ROOT / "GLOSSARY.md").read_text()
+        self.assertIn("**Implementation discipline**:", glossary)
 
     def test_decisions_adapter_is_discoverable(self) -> None:
         metadata = skill_frontmatter("steer-decisions")

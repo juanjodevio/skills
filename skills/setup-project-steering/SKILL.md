@@ -63,6 +63,10 @@ copies of Matt skills.
 7. **Bootstrap through the orchestrator.** For each confirmed active artifact,
    invoke `steer-project` so ownership, ordering, validation, and related work
    follow the shared Steering workflow. Do not bypass focused adapters.
+   When confirmed `evidenceAdapters` includes `software` and/or `data`,
+   `steer-agent-guidance` materializes Implementation discipline
+   (`docs/agents/implementation-discipline.md`) and its agent-guidance pointer
+   during that bootstrap. Marketing-only Projects skip both (ADR-0002).
 
 ## Operating Rules
 
@@ -71,6 +75,8 @@ copies of Matt skills.
 - Mixed Projects may enable software, data, and marketing evidence adapters
   together without flattening domain meaning.
 - Bootstrap only the confirmed active set.
+- Implementation discipline follows evidence adapters via `steer-agent-guidance`;
+  setup does not copy that file itself.
 - Reuse Matt skills by name only.
 
 ## Result

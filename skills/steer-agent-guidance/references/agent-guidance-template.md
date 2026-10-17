@@ -35,6 +35,9 @@ Include a short local reminder only when navigation requires it.
 - Read the owning Steering artifact before changing durable truth.
 - Update the owning artifact when durable truth changes; keep this file as
   pointers.
+- When `evidenceAdapters` includes `software` and/or `data`: before
+  `implement-spec`, read `docs/agents/implementation-discipline.md`
+  (Implementation discipline). Omit this bullet on marketing-only Projects.
 
 ## Safety And Approval Boundaries
 

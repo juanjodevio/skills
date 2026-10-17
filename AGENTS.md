@@ -39,3 +39,5 @@ Configuration: `.steering.json`. Design is inactive for this Project.
 - Commands and stack: `docs/TECH.md`. Layout and placement: `docs/STRUCTURE.md`.
 - Ask before changing Intent, roadmap priority, public skill contracts, or
   accepted ADR direction.
+- Before software or data Ticket implementation (`implement-spec`): read
+  [Implementation discipline](docs/agents/implementation-discipline.md).

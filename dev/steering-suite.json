@@ -96,7 +96,8 @@
         "steer-project"
       ],
       "references": [
-        "skills/steer-agent-guidance/references/agent-guidance-template.md"
+        "skills/steer-agent-guidance/references/agent-guidance-template.md",
+        "skills/steer-agent-guidance/references/implementation-discipline.md"
       ]
     },
     {

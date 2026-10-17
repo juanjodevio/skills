@@ -10,6 +10,14 @@ the Project root is not a Git repository, stop before implementation with a
 clear **capability blocker**. Preserve the approved Specification and Tickets;
 do not reopen shape gates. Outcome is **blocked**.
 
+## Implementation discipline
+
+When `.steering.json` `evidenceAdapters` includes `software` and/or `data`,
+read `docs/agents/implementation-discipline.md` **before** invoking
+`implement-spec`. If that file is missing, stop and report that
+`steer-agent-guidance` must materialize it from its seed (ADR-0002). Skip this
+read when adapters are marketing-only.
+
 ## Frontier
 
 The **Frontier** is every unfinished **agent-ready** Ticket whose blocking
