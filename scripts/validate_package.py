@@ -62,9 +62,15 @@ def validate_modules(suite: dict) -> None:
     if suite.get("defaultEntrypoint") != "steer-project":
         fail("defaultEntrypoint must be steer-project")
 
-    required = {"steer-project", "steer-intent"}
+    required = {"steer-project", "steer-intent", "steer-decisions"}
     if not required.issubset(set(names)):
         fail(f"modules must include {sorted(required)}")
+
+    roles = {module.get("name"): module.get("role") for module in modules}
+    if roles.get("steer-decisions") != "decisions-adapter":
+        fail("steer-decisions must have role decisions-adapter")
+    if roles.get("steer-adr") != "legacy":
+        fail("steer-adr must remain legacy until removal")
 
     for module in modules:
         name = module.get("name")
@@ -124,6 +130,12 @@ def validate_scenarios(suite: dict) -> None:
         "scenarios/intent-normal-update.md",
         "scenarios/intent-conflicting-evidence.md",
         "scenarios/intent-missing-material-intent.md",
+        "scenarios/decisions-eligible-short-adr.md",
+        "scenarios/decisions-ineligible-reversible.md",
+        "scenarios/decisions-ineligible-unsurprising.md",
+        "scenarios/decisions-ineligible-no-trade-off.md",
+        "scenarios/decisions-status-index-consistency.md",
+        "scenarios/decisions-supersession.md",
     }
     missing = required - set(listed)
     if missing:

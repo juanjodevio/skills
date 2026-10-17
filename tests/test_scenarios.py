@@ -16,6 +16,18 @@ class ScenarioValidationTests(unittest.TestCase):
         present = {path.name for path in SCENARIOS.glob("*.md")}
         self.assertTrue(required.issubset(present), present)
 
+    def test_required_decisions_scenarios_exist(self) -> None:
+        required = {
+            "decisions-eligible-short-adr.md",
+            "decisions-ineligible-reversible.md",
+            "decisions-ineligible-unsurprising.md",
+            "decisions-ineligible-no-trade-off.md",
+            "decisions-status-index-consistency.md",
+            "decisions-supersession.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
     def test_scenarios_cover_evidence_profiles(self) -> None:
         texts = [path.read_text() for path in SCENARIOS.glob("*.md")]
         joined = "\n".join(texts)
@@ -35,6 +47,24 @@ class ScenarioValidationTests(unittest.TestCase):
             "asks for material Intent",
             texts["intent-missing-material-intent.md"],
         )
+        self.assertIn("hard to reverse", texts["decisions-eligible-short-adr.md"])
+        self.assertIn(
+            "intentionally skipped",
+            texts["decisions-ineligible-reversible.md"],
+        )
+        self.assertIn(
+            "intentionally skipped",
+            texts["decisions-ineligible-unsurprising.md"],
+        )
+        self.assertIn(
+            "intentionally skipped",
+            texts["decisions-ineligible-no-trade-off.md"],
+        )
+        self.assertIn(
+            "status-bearing index",
+            texts["decisions-status-index-consistency.md"],
+        )
+        self.assertIn("supersed", texts["decisions-supersession.md"].lower())
 
 
 if __name__ == "__main__":

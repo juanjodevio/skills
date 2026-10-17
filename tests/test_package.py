@@ -33,6 +33,27 @@ class PackageValidationTests(unittest.TestCase):
         self.assertEqual(metadata["name"], "steer-intent")
         self.assertIn("Intent", metadata["description"])
 
+    def test_decisions_adapter_is_discoverable(self) -> None:
+        metadata = skill_frontmatter("steer-decisions")
+
+        self.assertEqual(metadata["name"], "steer-decisions")
+        self.assertIn("decision", metadata["description"].lower())
+        skill_text = (ROOT / "skills" / "steer-decisions" / "SKILL.md").read_text()
+        self.assertIn("steer-project", skill_text)
+        self.assertIn("domain-modeling", skill_text)
+        self.assertIn("hard to reverse", skill_text.lower())
+        self.assertIn("surprising without context", skill_text.lower())
+        self.assertIn("trade-off", skill_text.lower())
+        self.assertIn("supersed", skill_text.lower())
+
+    def test_legacy_steer_adr_remains(self) -> None:
+        metadata = skill_frontmatter("steer-adr")
+
+        self.assertEqual(metadata["name"], "steer-adr")
+        suite = (ROOT / "steering-suite.json").read_text()
+        self.assertIn('"name": "steer-adr"', suite)
+        self.assertIn('"role": "legacy"', suite)
+
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(
             [sys.executable, "scripts/validate_package.py"],
