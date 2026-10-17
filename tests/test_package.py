@@ -231,6 +231,9 @@ class PackageValidationTests(unittest.TestCase):
             self.assertIn(name, catalog)
         self.assertIn("Work lifecycle", catalog)
         self.assertIn("Situational", catalog)
+        for situational in ("handoff", "wait-what", "architecture review"):
+            self.assertIn(situational, catalog)
+        self.assertIn("lifecycle stages", catalog.lower())
 
         installation = (ROOT / "docs" / "installation.md").read_text()
         self.assertIn("full suite", installation.lower())

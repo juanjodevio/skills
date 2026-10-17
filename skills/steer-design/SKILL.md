@@ -27,7 +27,7 @@ Design owns:
 - accessibility expectations
 - confirmed assumptions and material unknowns
 
-Design does not own product purpose or scope, technology stack or commands,
+Design does not own Project Intent, purpose, or scope, technology stack or commands,
 delivery sequence, repository layout, decision history, or agent instructions.
 Classify those as related work for their owning adapters.
 

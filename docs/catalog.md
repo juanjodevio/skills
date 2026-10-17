@@ -13,7 +13,8 @@ installation is unsupported. See [installation](installation.md).
 ## Focused truth adapters
 
 Each adapter owns one Steering artifact kind and delegates the shared process to
-`steer-project`.
+`steer-project`. Invoke them when one truth kind is clearly in scope; they are
+not Work lifecycle stages.
 
 | Skill | Owns |
 | --- | --- |
@@ -29,27 +30,25 @@ Each adapter owns one Steering artifact kind and delegates the shared process to
 
 | Skill | Role |
 | --- | --- |
-| `deliver-work` | Default Work lifecycle coordinator: unresolved intent → grill → Specification → Tickets → Frontier execution → retrospective. Reuses Matt skills by name. |
+| `deliver-work` | Default Work lifecycle coordinator: unresolved intent → grill → Specification → Tickets → Frontier execution → retrospective. |
 
-`deliver-work` is the default path for carrying settled intent into planned work.
-It is not a Steering artifact adapter.
+`deliver-work` reuses these Matt skills **by name as lifecycle stages** (not
+Situational skills): `grill-with-docs`, `domain-modeling`, `to-spec`,
+`to-tickets`, `implement-spec`, and `retro`. It also may invoke
+`setup-matt-pocock-skills` and `writing-for-agents` when setup or guidance
+prose requires them. This suite does not vendor those implementations.
 
 ## Situational skills
 
 Situational skills are invoked when a specific need arises. They are **not**
-required stages of the Work lifecycle.
+required stages of the Work lifecycle:
 
-Examples used by this suite (by name only; not vendored here):
+- `handoff`
+- `wait-what`
+- architecture review
 
-- `grill-with-docs`, `domain-modeling` — sharpen intent and settle Domain language
-- `to-spec`, `to-tickets` — Specification and Ticket shaping
-- `implement-spec`, `retro` — execution and retrospective learning
-- `writing-for-agents` — agent-facing prose quality for guidance artifacts
-- `setup-matt-pocock-skills` — tracker, triage, Domain docs, and ADR prerequisites
-
-Steering adapters (`steer-intent`, `steer-design`, and the other focused truth
-adapters) are also Situational relative to the Work lifecycle: invoke them when
-durable Project truth needs updating, not as mandatory lifecycle stages.
+Invoke them from their upstream Matt implementations when the situation
+warrants it.
 
 ## Related docs
 

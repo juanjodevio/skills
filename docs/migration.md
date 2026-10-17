@@ -13,7 +13,7 @@ skill names.
 | `steer-product` | `steer-intent` | Intent replaces product-purpose docs. Artifact path is configured (often Intent / `PRODUCT.md` legacy locations via mapping). |
 | `steer-tech` | `steer-technology` | Broader technology adapter; not package-manager-only. |
 | `steer-adr` | `steer-decisions` | Decision eligibility and supersession live in `steer-decisions`. |
-| `steer-agents` | `steer-agent-guidance` | Compact agent guidance with pointers; still Situational relative to the Work lifecycle. |
+| `steer-agents` | `steer-agent-guidance` | Compact agent guidance with pointers; not a Work lifecycle stage. |
 
 Names that already match the approved suite keep their public identity:
 

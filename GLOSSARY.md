@@ -25,11 +25,11 @@ The shared understanding of a project's concepts, their precise meanings, and th
 _Avoid_: Glossary, terminology list
 
 **Work lifecycle**:
-The default path from unresolved intent through grilling, specification, tickets, subagent execution, and retrospective learning.
+The default path from unresolved intent through grilling, Specification, Tickets, implementation via `implement-spec`, and retrospective learning.
 _Avoid_: Development pipeline, delivery pipeline
 
 **Situational skill**:
-A skill invoked when a specific need arises rather than as a required stage of the work lifecycle.
+A skill invoked when a specific need arises rather than as a required stage of the Work lifecycle. Named Situational skills include `handoff`, `wait-what`, and architecture review; they are not lifecycle stages.
 _Avoid_: Optional lifecycle stage
 
 **Ticket**:

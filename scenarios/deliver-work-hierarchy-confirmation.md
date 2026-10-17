@@ -26,5 +26,5 @@ software, data
   project/epic grouping, and multi-Specification initiative.
 - Because the recommendation is ambiguous, the coordinator confirms with the
   maintainer before publishing.
-- Every Specification still retains one canonical issue-like record after the
+- Every Specification still retains one canonical Specification record after the
   chosen hierarchy is applied.

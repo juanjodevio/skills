@@ -98,10 +98,11 @@ clearly in scope. Full detail: [docs/catalog.md](docs/catalog.md).
 | `deliver-work` | Default Work lifecycle coordinator. |
 
 **Work lifecycle vs Situational skills:** `deliver-work` is the default path from
-unresolved intent through Tickets, execution, and retrospective. Focused
-steering adapters and Matt helpers (`grill-with-docs`, `to-spec`,
-`implement-spec`, `retro`, and others) are Situational—invoke them when needed,
-not as mandatory lifecycle stages. See the catalog.
+unresolved intent through grilling, Specification, Tickets, `implement-spec`,
+and `retro`. Those Matt skills are **lifecycle stages** reused by name, not
+Situational. Situational skills (`handoff`, `wait-what`, architecture review)
+are invoked only when needed. Focused steering adapters update durable truth
+outside the Work lifecycle. See the catalog.
 
 ## How The Suite Works
 

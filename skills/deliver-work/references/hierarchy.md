@@ -20,7 +20,7 @@ ticket count.
 
 ## Rules
 
-- Every Specification retains **one** canonical issue-like record, regardless
+- Every Specification retains **one** canonical Specification record, regardless
   of grouping.
 - Prefer native parent/child (and project/epic) relationships from the
   configured tracker mappings.

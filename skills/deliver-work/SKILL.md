@@ -51,7 +51,7 @@ invent a reduced local substitute.
    publishing.
 4. **Synthesize the Specification.** Invoke `to-spec` by name. A Specification
    is one coherent outcome with one integration branch and one final acceptance
-   decision, retained as one canonical issue-like record in the configured Work
+   decision, retained as one canonical Specification record in the configured Work
    tracker. Keep the **test seams** human gate from `to-spec` intact.
 5. **Decompose into Tickets.** Invoke `to-tickets` by name. Each Ticket is an
    independently verifiable vertical slice sized for one fresh agent context.

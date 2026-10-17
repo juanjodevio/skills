@@ -436,6 +436,37 @@ class ScenarioValidationTests(unittest.TestCase):
         self.assertIn("approved Specification", non_git)
         self.assertIn("Tickets", non_git)
 
+    def test_evidence_domain_and_migration_scenarios_exist(self) -> None:
+        required = {
+            "evidence-data-only.md",
+            "evidence-marketing-only.md",
+            "migration-obsolete-names-absent.md",
+        }
+        present = {path.name for path in SCENARIOS.glob("*.md")}
+        self.assertTrue(required.issubset(present), present)
+
+        texts = {
+            path.name: path.read_text() for path in SCENARIOS.glob("*.md")
+        }
+        data = texts["evidence-data-only.md"]
+        self.assertIn("`data` only", data)
+        self.assertIn("not Intent", data)
+
+        marketing = texts["evidence-marketing-only.md"]
+        self.assertIn("marketing", marketing)
+        self.assertIn("not Intent", marketing)
+
+        migration = texts["migration-obsolete-names-absent.md"]
+        for obsolete in (
+            "product-steering",
+            "steer-product",
+            "steer-tech",
+            "steer-adr",
+            "steer-agents",
+        ):
+            self.assertIn(obsolete, migration)
+        self.assertIn("no alias", migration.lower())
+
 
 if __name__ == "__main__":
     unittest.main()

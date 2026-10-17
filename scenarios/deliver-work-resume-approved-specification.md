@@ -10,7 +10,7 @@ still needs Tickets.
 A data Project with:
 
 - `.steering.json` workTracker mappings already configured
-- one approved Specification (canonical issue-like record present; status maps
+- one approved Specification (canonical Specification record present; status maps
   to approved)
 - no approved Tickets yet for that Specification
 - Matt skills available by name

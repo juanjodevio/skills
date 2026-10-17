@@ -24,7 +24,7 @@ Agent guidance owns:
 - durable-truth maintenance instructions that point agents back to owning
   artifacts
 
-Agent guidance does not own product Intent, technology commands or stack truth,
+Agent guidance does not own Project Intent, technology commands or stack truth,
 design semantics, delivery sequence, repository layout rules, or architecture
 decisions. Classify those as related work for their owning adapters. Point at
 canonical owners; do not copy their content.
@@ -52,7 +52,7 @@ Update guidance only when agent behavior or navigation materially changes.
 
 - Guidance identifies canonical Steering artifacts and configuration by pointer,
   without copying their content.
-- Commands, architecture decisions, and product Intent remain owned elsewhere
+- Commands, architecture decisions, and Project Intent remain owned elsewhere
   and appear here only as pointers or related-work reports.
 - Compatible root guidance conventions are preserved via the configured mapping.
 - `writing-for-agents` was invoked for writing discipline rather than inlined.
