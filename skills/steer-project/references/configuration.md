@@ -37,5 +37,6 @@ orientation file. Existing Projects may instead confirm those defaults in
 conversation. Do not create configuration merely to document an assumption.
 
 Treat malformed configuration, duplicate ownership, paths outside the Project,
-and mappings to non-file targets as blocking configuration errors. Report them
-without editing an artifact.
+and mappings to impossible targets as blocking configuration errors. An
+impossible target is neither a file nor a directory. A directory such as
+`docs/adr` is valid. Report blocking errors without editing an artifact.

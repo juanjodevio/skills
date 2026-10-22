@@ -45,7 +45,11 @@ Use this workflow for every Steering request:
    direction; technology and design before affected roadmap or structure work;
    eligible decisions after their trade-off settles; agent guidance last.
    Unrelated artifacts may proceed independently. Preserve useful local
-   structure and established terminology.
+   structure and established terminology. When the owner is listed in
+   `inactiveArtifacts` and its configured artifact is absent, ask the maintainer
+   to activate that truth kind before creating the artifact or moving it into
+   `activeArtifacts`. On confirmation, record the move in `.steering.json` and
+   continue. On decline, leave the kind inactive and skip that owner.
 5. **Validate each artifact.** Check that claims are grounded in confirmed
    intent or clearly marked uncertainty, required metadata is present when
    relevant, local links resolve, and each focused adapter's self-check passes.

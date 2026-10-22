@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SUITE_PATH = ROOT / "dev" / "steering-suite.json"
 
 
+def collapsed(text: str) -> str:
+    return re.sub(r"\s+", " ", text)
+
+
 def skill_frontmatter(skill_name: str) -> dict[str, str]:
     text = (ROOT / "skills" / skill_name / "SKILL.md").read_text()
     match = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
@@ -310,6 +314,40 @@ class PackageValidationTests(unittest.TestCase):
         glossary = (ROOT / "GLOSSARY.md").read_text()
         self.assertIn("Project steering", glossary)
         self.assertIn("Situational skill", glossary)
+
+    def test_software_or_data_evidence_keeps_agent_guidance_active(self) -> None:
+        schema = (
+            ROOT
+            / "skills"
+            / "setup-project-steering"
+            / "references"
+            / "configuration-schema.md"
+        ).read_text()
+        example = json.loads(re.search(r"```json\n(.*?)\n```", schema, re.DOTALL).group(1))
+
+        self.assertTrue(set(example["evidenceAdapters"]) & {"software", "data"})
+        self.assertIn("agent-guidance", example["activeArtifacts"])
+        self.assertNotIn("agent-guidance", example["inactiveArtifacts"])
+        self.assertIn(
+            "include `agent-guidance` in `activeArtifacts`",
+            collapsed(schema),
+        )
+
+    def test_decision_mappings_accept_directories(self) -> None:
+        config = (
+            ROOT / "skills" / "steer-project" / "references" / "configuration.md"
+        ).read_text()
+
+        self.assertNotIn("non-file", config)
+        self.assertIn("impossible targets", config)
+        self.assertIn("A directory such as `docs/adr` is valid", collapsed(config))
+
+    def test_inactive_owner_requires_confirmation_before_creation(self) -> None:
+        skill = (ROOT / "skills" / "steer-project" / "SKILL.md").read_text()
+
+        self.assertIn("inactiveArtifacts", skill)
+        self.assertIn("ask the maintainer to activate", collapsed(skill).lower())
+        self.assertIn("activeArtifacts", skill)
 
     def test_package_contract_is_valid(self) -> None:
         result = subprocess.run(

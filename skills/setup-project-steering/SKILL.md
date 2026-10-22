@@ -49,7 +49,9 @@ copies of Matt skills.
    - active truth kinds
    - artifact path mappings (preserve compatible existing paths; defaults only
      when no owner exists)
-   - evidence adapters — software, data, and marketing may activate together
+   - evidence adapters — software, data, and marketing may activate together;
+     apply the configuration schema rule that keeps `agent-guidance` active
+     when software or data is included
    - intentionally inactive artifacts
    - Work tracker kind and mappings for status, role, hierarchy, blocker, and
      comment/activity (Linear, GitHub, GitLab, Jira, local Markdown, or a

@@ -15,8 +15,8 @@ Project root.
     "decisions": "docs/adr",
     "agent-guidance": "AGENTS.md"
   },
-  "activeArtifacts": ["intent", "technology", "roadmap", "decisions"],
-  "inactiveArtifacts": ["design", "structure", "agent-guidance"],
+  "activeArtifacts": ["intent", "technology", "roadmap", "decisions", "agent-guidance"],
+  "inactiveArtifacts": ["design", "structure"],
   "evidenceAdapters": ["software", "data"],
   "workTracker": {
     "kind": "linear",
@@ -36,6 +36,10 @@ Project root.
 - `activeArtifacts` are the only kinds bootstrap may create or refresh.
 - `inactiveArtifacts` are intentional omissions: record them; do not create
   empty files for them.
+- When `evidenceAdapters` includes `software` or `data`, include
+  `agent-guidance` in `activeArtifacts` so bootstrap can materialize
+  Implementation discipline and its pointer. Marketing-only evidence may leave
+  `agent-guidance` inactive.
 - `evidenceAdapters` may include any combination of `software`, `data`, and
   `marketing`.
 - `workTracker.kind` is one of `linear`, `github`, `gitlab`, `jira`,
