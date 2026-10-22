@@ -1,0 +1,44 @@
+{
+  "artifacts": {
+    "intent": "docs/INTENT.md",
+    "design": "docs/DESIGN.md",
+    "technology": "docs/TECH.md",
+    "structure": "docs/STRUCTURE.md",
+    "roadmap": "docs/ROADMAP.md",
+    "decisions": "docs/adr",
+    "agent-guidance": "AGENTS.md"
+  },
+  "activeArtifacts": [
+    "intent",
+    "technology",
+    "structure",
+    "roadmap",
+    "decisions",
+    "agent-guidance"
+  ],
+  "inactiveArtifacts": ["design"],
+  "evidenceAdapters": ["software"],
+  "workTracker": {
+    "kind": "linear",
+    "status": {
+      "specification": "Linear workflow states on parent Spec issues",
+      "ticket": "Linear workflow states on child Ticket issues"
+    },
+    "role": {
+      "agent": "ready-for-agent",
+      "human": "ready-for-human",
+      "triage": ["needs-triage", "needs-info", "wontfix"]
+    },
+    "hierarchy": {
+      "specificationToTickets": "native parent/child",
+      "grouping": "Linear project/epic optional"
+    },
+    "blocker": {
+      "representation": "native blocked-by relations"
+    },
+    "commentActivity": {
+      "progress": "issue comments via Linear MCP save_comment",
+      "specRunSummary": "comment on parent Specification"
+    }
+  }
+}

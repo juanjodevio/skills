@@ -1,12 +1,12 @@
-# ROADMAP.md Template
+# Roadmap Template
 
-# Roadmap
+Use the Project's established structure when it is clear. For a new or sparse
+Roadmap Steering artifact, adapt this shape:
 
-Last Reviewed: YYYY-MM-DD
+```markdown
+# Project Roadmap
 
 ## Roadmap Summary
-
-Briefly explain the current direction and planning horizon.
 
 ## Now
 
@@ -22,11 +22,11 @@ Briefly explain the current direction and planning horizon.
 
 ## Non-Goals
 
-- Work the project should not pursue now
+- Work the Project should not pursue in this horizon
 
 ## Risks And Dependencies
 
-- Risk or dependency and its impact
+- Risk or dependency and its impact on sequence
 
 ## Decision Points
 
@@ -34,8 +34,14 @@ Briefly explain the current direction and planning horizon.
 
 ## Assumptions
 
-- Assumption with source or confidence
-
 ## Unknowns
 
-- Roadmap question that needs human input
+## Last Reviewed
+YYYY-MM-DD by <reviewer or source>
+```
+
+Omit empty optional sections when they add no information. Keep items
+outcome-oriented. Ticket-level execution detail belongs in the work tracker,
+not here. `Assumptions`, `Unknowns`, and `Last Reviewed` should make meaningful
+uncertainty and freshness visible, not imply certainty that has not been
+established.

@@ -1,31 +1,47 @@
-# DESIGN.md Template
+# Design Template
 
-# Design
+Use the Project's established structure when it is clear. For a new or sparse
+Design Steering artifact, adapt this shape. The section set is inspired by
+Google's `design-md` semantic pattern; omit empty optional sections and do not
+require Stitch.
 
-Status: Draft
-Last Reviewed: YYYY-MM-DD
+```markdown
+# Design Direction
 
-## Context
+## Atmosphere
 
-Describe the design problem, product surface, or experience context.
+## Principles
 
-## Proposed Solution
+## Colors
 
-Capture the current durable design direction. Include UI principles, interaction patterns, visual system notes, and accessibility expectations when known.
+## Typography
 
-## Consequences
+## Layout
 
-- Positive consequence
-- Trade-off or risk
+## Spacing
 
-## Stitch Compatibility
+## Shapes
 
-`docs/DESIGN.md` is canonical. If another location needs `DESIGN.md`, prefer a symlink to this file. Use a copy only when symlinks are not practical and record why.
+## Surfaces
+
+## Interface Styling
+
+## Interaction
+
+## Content
+
+## Responsive Behavior
+
+## Accessibility
 
 ## Assumptions
 
-- Assumption with source or confidence
-
 ## Unknowns
 
-- Design question that needs human input
+## Last Reviewed
+YYYY-MM-DD by <reviewer or source>
+```
+
+Omit empty optional sections when they add no information. `Assumptions`,
+`Unknowns`, and `Last Reviewed` should make meaningful uncertainty and freshness
+visible, not imply certainty that has not been established.

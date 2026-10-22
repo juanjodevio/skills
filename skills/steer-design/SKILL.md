@@ -1,65 +1,68 @@
 ---
 name: steer-design
-description: Maintain docs/DESIGN.md as the canonical design context, especially for Google Stitch-compatible DESIGN.md workflows. Use this skill whenever the user asks about design direction, UI principles, visual system, Stitch design context, accessibility, interaction patterns, or whether DESIGN.md should be symlinked into another directory.
+description: Steer durable design direction through the shared Steering workflow. Use this focused adapter for atmosphere, principles, visual system, interaction, content, responsive behavior, accessibility, assumptions, and unknowns.
 ---
 
 # Steer Design
 
-Maintain canonical `docs/DESIGN.md`. This file captures durable design context for UI and product experience work.
+Maintain the Steering artifact configured for `design`. Delegate the common
+process to `steer-project`; this adapter supplies Design ownership and
+validation rather than a second workflow.
+
+The semantic Design pattern is inspired by Google's `design-md` format. Do not
+install, invoke, or require Stitch, and do not copy Stitch-specific retrieval
+or generation behavior.
 
 ## Ownership
 
-Own design truth:
+Design owns:
 
-- design context and status
-- UI principles
-- visual system guidance
-- interaction patterns
+- atmosphere and brand personality for the experience
+- visual and interaction principles
+- colors, typography, layout, and spacing
+- shapes and surfaces
+- interface styling and interaction patterns
+- content style that affects presentation
+- responsive behavior
 - accessibility expectations
-- content style notes when they affect UI
-- Google Stitch-compatible `DESIGN.md` structure
-- assumptions and unknowns
-- last-reviewed metadata
+- confirmed assumptions and material unknowns
 
-Do not duplicate roadmap sequencing, technical commands, or product scope beyond short links to the canonical docs.
+Design does not own Project Intent, purpose, or scope, technology stack or commands,
+delivery sequence, repository layout, decision history, or agent instructions.
+Classify those as related work for their owning adapters.
 
-## Google Stitch Compatibility
+## Procedure
 
-Keep `docs/DESIGN.md` canonical. If another tool or subproject needs a `DESIGN.md` at a different path, prefer a symlink to `docs/DESIGN.md`. Use a copy only when symlinks are not practical in that environment, and record why.
-
-When creating `docs/DESIGN.md` from scratch or normalizing a sparse file, read `references/design-template.md`.
-
-When no stronger project template exists, use a Stitch-compatible shape:
-
-- Title
-- Status
-- Context
-- Proposed Solution
-- Consequences
-- Assumptions
-- Unknowns
-- Last Reviewed
-
-Preserve any additional Stitch-required sections already present in the repository.
-
-## Workflow
-
-1. Read `docs/DESIGN.md` if it exists.
-2. Inspect UI code, screenshots, design docs, style tokens, component libraries, and product docs when relevant.
-3. Separate visible implementation facts from design intent.
-4. Use `AskQuestionTool` where possible for bounded design choices, such as status, visual direction, symlink vs copy, or accessibility priority.
-5. Ask in plain text for open-ended design rationale.
-6. Update only `docs/DESIGN.md` unless the user explicitly asks for symlink/copy updates.
-7. If the change establishes a durable design direction that affects implementation, propose or create an ADR through `steer-adr`.
-8. Return cross-doc follow-ups for product, roadmap, tech, ADR, or `AGENTS.md`.
+1. Invoke the shared Steering workflow in `steer-project`.
+2. Resolve `design` through `.steering.json`; do not assume the artifact is
+   named `DESIGN.md`, `docs/DESIGN.md`, or any other physical name. Preserve
+   compatible existing locations through the configured mapping.
+3. Inspect available user, repository, visual, and brand evidence across the
+   relevant software, data, and marketing profiles. Treat UI code, screenshots,
+   assets, brand guidance, and current design artifacts as evidence only.
+4. Ask only questions whose answers materially affect Design. When material
+   design intent cannot be established from maintainer-provided intent or an
+   explicit current source, invoke `grill-with-docs` before writing settled
+   claims.
+5. When the maintainer cannot answer and a safe update remains possible, label
+   provisional claims under `Assumptions` and unanswered decisions under
+   `Unknowns`. Do not present either as settled design intent.
+6. Update only the configured Design Steering artifact, using the existing
+   structure or [Design template](references/design-template.md).
+7. Run the shared validation, consistency check, and related-work report.
 
 ## Self-Check
 
-Before finishing, check that:
-
-- `docs/DESIGN.md` remains the canonical path
-- symlink or copy guidance is explicit when other locations need `DESIGN.md`
-- design intent is not invented from UI code alone
-- accessibility expectations are stated or listed as unknown
-- durable design decisions were routed to ADR consideration
-- `Last Reviewed` is present or intentionally preserved
+- Every settled claim comes from maintainer-provided design intent or an
+  explicit, current source of design intent.
+- Visual implementation, screenshots, and assets are not promoted to desired
+  design direction on their own.
+- Material conflicts and missing design intent caused questions,
+  `grill-with-docs`, or explicit unknowns.
+- The pattern covers atmosphere, principles, colors, typography, layout,
+  spacing, shapes, surfaces, interface styling, interaction, content,
+  responsive behavior, accessibility, assumptions, and unknowns when relevant,
+  without empty ceremonial sections.
+- Stitch is not installed, invoked, or required.
+- Intent, technology, roadmap, structure, decision, and agent-guidance changes
+  are reported as related work rather than edited in this invocation.

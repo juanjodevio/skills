@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "defaultEntrypoint": "steer-project",
+  "defaultWorkLifecycle": "deliver-work",
+  "workflowStages": [
+    "inspect-evidence",
+    "classify-ownership",
+    "resolve-material-unknowns",
+    "update-one-artifact",
+    "validate-artifact",
+    "check-consistency",
+    "report-related-work"
+  ],
+  "evidenceProfiles": [
+    "software",
+    "data",
+    "marketing"
+  ],
+  "modules": [
+    {
+      "name": "setup-project-steering",
+      "role": "setup",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/setup-project-steering/references/configuration-schema.md",
+        "skills/setup-project-steering/references/tracker-configuration.md"
+      ]
+    },
+    {
+      "name": "deliver-work",
+      "role": "work-lifecycle",
+      "dependencies": [],
+      "references": [
+        "skills/deliver-work/references/lifecycle-stages.md",
+        "skills/deliver-work/references/hierarchy.md",
+        "skills/deliver-work/references/tracker-publication.md",
+        "skills/deliver-work/references/execution.md"
+      ]
+    },
+    {
+      "name": "steer-project",
+      "role": "entrypoint",
+      "dependencies": [],
+      "references": [
+        "skills/steer-project/references/configuration.md",
+        "skills/steer-project/references/evidence-profiles.md",
+        "skills/steer-project/references/orchestration.md"
+      ]
+    },
+    {
+      "name": "steer-intent",
+      "role": "intent-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-intent/references/intent-template.md"
+      ]
+    },
+    {
+      "name": "steer-design",
+      "role": "design-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-design/references/design-template.md"
+      ]
+    },
+    {
+      "name": "steer-technology",
+      "role": "technology-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-technology/references/technology-template.md"
+      ]
+    },
+    {
+      "name": "steer-decisions",
+      "role": "decisions-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-decisions/references/decision-record-template.md"
+      ]
+    },
+    {
+      "name": "steer-agent-guidance",
+      "role": "agent-guidance-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-agent-guidance/references/agent-guidance-template.md",
+        "skills/steer-agent-guidance/references/implementation-discipline.md"
+      ]
+    },
+    {
+      "name": "steer-roadmap",
+      "role": "roadmap-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-roadmap/references/roadmap-template.md"
+      ]
+    },
+    {
+      "name": "steer-structure",
+      "role": "structure-adapter",
+      "dependencies": [
+        "steer-project"
+      ],
+      "references": [
+        "skills/steer-structure/references/structure-template.md"
+      ]
+    }
+  ]
+}

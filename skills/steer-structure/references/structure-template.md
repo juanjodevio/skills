@@ -1,16 +1,16 @@
-# STRUCTURE.md Template
+# Structure Template
 
-# Structure
+Use the Project's established structure when it is clear. For a new or sparse
+Structure Steering artifact, adapt this shape:
 
-Last Reviewed: YYYY-MM-DD
+```markdown
+# Repository Structure
 
-## Repository Overview
+## Overview
 
-Summarize the repository shape and primary areas.
+## Major Areas
 
-## Directory Map
-
-- `path/`: purpose and ownership notes
+- `path/`: purpose, ownership, and relationships to other areas
 
 ## Ownership Boundaries
 
@@ -18,25 +18,26 @@ Summarize the repository shape and primary areas.
 
 ## Placement Rules
 
-- New code:
+- New work:
 - Tests:
 - Docs:
 - Assets:
 - Scripts:
-- Generated files:
+- Generated and temporary content:
 
-## Tests And Fixtures
+## Naming Conventions
 
-Explain where tests and fixtures live and how they mirror source.
-
-## Generated Files And Artifacts
-
-List generated outputs agents should avoid editing by hand.
+- Convention with the placement or ownership rule it supports
 
 ## Assumptions
 
-- Assumption with source or confidence
-
 ## Unknowns
 
-- Structural question that needs human input
+## Last Reviewed
+YYYY-MM-DD by <reviewer or source>
+```
+
+Keep the Directory or Major Areas map navigational: short purpose and ownership
+notes for paths that affect where agents and humans place work. Omit empty
+optional sections. Do not turn Structure into a full file inventory, and do not
+copy technology commands or stack detail from the technology Steering artifact.
